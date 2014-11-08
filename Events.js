@@ -1,17 +1,17 @@
 document.onmousedown = function(evt)
 {
     evt = evt || event;
-    engine.mouseDown(evt);
+    //engine.mouseDown(evt);
 }
 
 document.onmouseup = function(evt)
 {
     evt = evt || event;
-    engine.mouseUp(evt);
+    //engine.mouseUp(evt);
 }
 
 document.addEventListener('keydown', function(event) {
-     switch(event.keyCode) {
+    switch(event.keyCode) {
         case 80:
             if(engine.running == true) {
                 engine.running = false;
@@ -21,23 +21,23 @@ document.addEventListener('keydown', function(event) {
             }
             break;
         case 69:
-            engine.toggleBgEffect();
+            //engine.toggleBgEffect();
             break;
         case 82:
-            engine.reset();
+            //engine.reset();
             break;
         case 83:
-            engine.toggleSound();
+            //engine.toggleSound();
             break;
     }
 });
 
 document.addEventListener('mousemove', function(event) {
-    engine.setMousePos(event);
+    //engine.setMousePos(event);
     if(engine.isRunning()) {
-        engine.drawMouse(context);
+        //engine.drawMouse(context);
     } else {
-        engine.draw(context);
+        //engine.draw(context);
     }
 });
 

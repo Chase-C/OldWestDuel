@@ -11,18 +11,18 @@ window.getAnimationFrame = (function()
             return animFrame;
         })();
 
-var engine = new Engine(window.innerWidth, window.innerHeight);
+var engine = new Engine(820, 640);
 
 function Run()
 {
+    engine.update();
+    engine.draw(context);
+
     if(engine.isRunning()) {
         window.getAnimationFrame(Run);
     } else {
         return;
     }
-
-    engine.update();
-    engine.draw(context);
 }
 
 function pause()
