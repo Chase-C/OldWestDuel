@@ -21,20 +21,13 @@ MenuState.prototype =
 	keyPress: function( keyCode)
 	{
 		this.currentScreen.keyPress(keyCode);
-		/*switch(keyCode){
-			case 37: // Left arrow
-				this.selectionNumber--;
-				break;
-			case 39: // Right arrow
-				this.selectionNumber++;
-				break;
-			case 13: // Enter
-			case 32: // Spacebar
-				//Move to the GameState
-				engine.startGame(this.selectionNumber);
-				break;
-		}*/
 	},
+
+    giveResources: function(resources)
+    {
+        this.stageSelection.giveResources(resources);
+        this.characterSelection.giveResources(resources);
+    },
 
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },

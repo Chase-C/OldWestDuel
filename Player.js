@@ -8,7 +8,7 @@ var Player = function(x, y, reverse)
 	this.jumpMagnitude = -0.7;//negative because the y axis is inverted
 	this.gravity       = 0.005;
     this.reverse       = reverse;
-	
+
 	this.gunCD		   = 0;//The number of milliseconds before the gun can be fired.
 	this.gunMaxCD      = 1000;//The number of milliseconds between one shot and the next.
 
@@ -21,43 +21,13 @@ var Player = function(x, y, reverse)
 	this.enemy 		   = null;//A reference to the opposing player. this.enemy.enemy = this
     this.hit           = false;
 
-    this.gunSprite     = new Image();
-    this.gunSprite.src = './images/gun_blue.png';
-
-    this.bloodSprite   = new AnimSprite('./images/blood.png', 500, false);
-    this.bloodSprite.addAnim(3, 0, 0, 8, 8);
+    this.gunSprite     = null;
+    this.bloodSprite   = null;
+    this.charSprite    = null;
 
     this.h = 0;//The actual height of the player
 	
 	this.characterSelection = 0; //which character the player's sprite is
-
-    this.image = new Image();
-    this.image.onload = (function() {
-        this.w = 2 * this.image.width;
-        this.h = 2 * this.image.height;
-
-        //adjust the y position so that sprites of all dimensions are properly aligned to the floor
-        this.y -= this.image.height * 2;
-        this.floorY = this.y;
-    }).bind(this);
-    this.image.src = './images/BigJoJo.png';
-	
-	this.becky = new Image();
-	this.becky.src = './images/becky.png';
-	
-	this.bently = new Image();
-	this.bently.src = './images/bently.png';
-	
-	this.fido = new Image();
-	this.fido.src = './images/fido.png';
-	
-	this.ford = new Image();
-	this.ford.src = './images/ford.png';
-	
-	this.grape = new Image();
-	this.grape.src = './images/grape.png';
-	
-	this.currentImage = this.becky;
 }
 
 Player.prototype =
@@ -108,20 +78,26 @@ Player.prototype =
         this.x += this.velX * dt;
 
         if (this.y > this.floorY) {
+            if (!this.hit) {
+                this.charSprite.changeAnim(0);
+            }
             this.y = this.floorY;
             this.velY = 0;
         }
 
-        if (!this.bloodSprite.complete) {
+        this.charSprite.update(dt);
+        this.gunSprite.update(dt);
+
+        if (!this.bloodSprite.anims[0].complete) {
             this.bloodSprite.update(dt);
         }
-
     },
 
     jump: function()
     {
-        if(this.y===this.floorY){//If you're on the ground
+        if(!this.hit && this.y===this.floorY){//If you're on the ground
             this.velY = this.jumpMagnitude;//
+            this.charSprite.changeAnim(2);
         }
 
     },
@@ -147,11 +123,36 @@ Player.prototype =
         this.floorY = this.y;
     },
 
+    giveResources: function(resources)
+    {
+        this.bloodSprite = resources.sprBlood.clone();
+    },
+
+    setChar: function(c)
+    {
+        this.charSprite = c;
+
+        this.w = 2 * this.charSprite.w;
+        this.h = 2 * this.charSprite.h;
+
+        //adjust the y position so that sprites of all dimensions are properly aligned to the floor
+        this.y -= this.h;
+        this.floorY = this.y;
+    },
+
+    setGun: function(g)
+    {
+        this.gunSprite = g;
+    },
+
     kill: function(colY)
     {
         this.colY = colY;
-        this.bloodSprite.complete = false;
+        this.bloodSprite.anims[0].complete = false;
+        this.bloodSprite.anims[0].frame = 0;
         this.hit = true;
+
+        this.charSprite.changeAnim(3);
     },
 
     draw: function(canvas)
@@ -161,15 +162,17 @@ Player.prototype =
             this.x = -this.x;
         }
 
-        canvas.translate(this.x + this.w - 4, this.y + (this.h / 2) - 8);
-        canvas.rotate(-this.angle);
-        canvas.drawImage(this.gunSprite, 0, 0, this.gunSprite.width * 2, this.gunSprite.height * 2);
-        canvas.rotate(this.angle);
-        canvas.translate(-(this.x + this.w - 4), -(this.y + (this.h / 2) - 8));
+        if (!this.hit) {
+            canvas.translate(this.x + this.w - 12, this.y + (this.h / 2) - 8);
+            canvas.rotate(-this.angle);
+            this.gunSprite.drawFrame(canvas, 0, 0, 0, 0);
+            canvas.rotate(this.angle);
+            canvas.translate(-(this.x + this.w - 12), -(this.y + (this.h / 2) - 8));
+        }
 
-        canvas.drawImage(this.currentImage, this.x, this.y, this.currentImage.width * 2, this.currentImage.height * 2);
+        this.charSprite.draw(canvas, this.x, this.y);
 
-        if (!this.bloodSprite.complete) {
+        if (!this.bloodSprite.anims[0].complete) {
             this.bloodSprite.draw(canvas, this.x + (0.7 * this.w), this.y + (this.h - this.colY) - 6);
         }
 
@@ -184,6 +187,10 @@ Player.prototype =
 	},
 	
 	canShoot: function(){
+        if (this.hit) {
+            return false;
+        }
+
 		if(this.gunCD <= 0){
 			return true;
 		}
