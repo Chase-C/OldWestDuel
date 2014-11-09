@@ -13,6 +13,10 @@ var Player = function(x, y, reverse)
 	this.gunMaxCD      = 1200;//The number of milliseconds between one shot and the reload.
 	this.reloadCD      = 0;//The number of milliseconds before the gun can be fired
 	this.reloadMaxCD   = 500;//The number of milliseconds between the end of the fire sound and the reload
+	
+	this.waitingForDraw = true;
+	this.drawTimer = 0;
+	this.maxDrawTimer = Math.random() * 10 + 2; //anywhere between 2 and 12 seconds
 
     this.enemyA        = 0;
     this.angle         = -1;
@@ -68,6 +72,16 @@ Player.prototype =
 {
     update: function(dt)
     {
+		if(this.waitingForDraw){ //players can't shoot until ref says draw
+			this.drawTimer += dt;
+			if(this.drawTimer / 1000.0 >= this.maxDrawTimer){
+				this.drawTimer = 0;
+				this.waitingForDraw = false;
+				console.log("Draw!");
+				this.maxDrawTimer = Math.random() * 10 + 2;
+			}
+		}
+	
         var e = 0.005;
         var aDiff = this.angle - this.enemyA;
 		
@@ -202,6 +216,10 @@ Player.prototype =
 	},
 	
 	canShoot: function(){
+		if(this.waitingForDraw || engine.gameState.roundIsEnding){
+			return false;
+		}
+	
 		if(this.gunCD <= 0 && this.reloadCD <= 0){
 			return true;
 		}
