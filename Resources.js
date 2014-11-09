@@ -4,11 +4,13 @@ var Resources = function(callback)
     this.bgFinalD = new Image();
     this.bgGrotto = new Image();
     this.bgFetus  = new Image();
+	this.bgPeaks = new Image();
 
     this.bgDesert.src = './images/bg_desert.png';
     this.bgFinalD.src = './images/finald.png';
     this.bgGrotto.src = './images/bg_grotto.png';
     this.bgFetus.src = './images/fetus of god.png';
+	this.bgPeaks.src = './images/peaks.png';
 
     this.p1Select    = new Image();
     this.p2Select    = new Image();

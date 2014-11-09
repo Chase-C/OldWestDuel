@@ -8,6 +8,7 @@ var GameState = function(w, h, level)
     this.desertBackground = null;
 	this.finalDestinationBackground = null;
 	this.grottoBackground = null;
+	this.peaksBackground = null;
 	this.activeBackground = null;
 
 	this.finalDestinationTheme = new Audio("final_D.ogg");
@@ -64,6 +65,9 @@ var GameState = function(w, h, level)
 	}
 	else if(level === 2){
 		this.grottoTheme.play();
+	}
+	else if(level === 3){
+		//this.peaksTheme.play();
 	}
 	
 	this.targetHeight = 0;
@@ -236,6 +240,7 @@ GameState.prototype =
         this.desertBackground = resources.bgDesert;
         this.finalDestinationBackground = resources.bgFinalD;
         this.grottoBackground = resources.bgGrotto;
+		this.peaksBackground = resources.bgPeaks;
         this.activeBackground = this.desertBackground;
 
         this.player1.giveResources(resources);
