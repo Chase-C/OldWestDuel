@@ -2,7 +2,7 @@ var GameState = function(w, h, level)
 {
     this.w = w || 0;
     this.h = h || 0;
-	
+	this.collY = -1;
 	this.level = level;
 
     this.desertBackground = new Image();
@@ -56,7 +56,18 @@ GameState.prototype =
             if (this.shots[i].active) {
                 this.shots[i].update(dt);
                 if (this.shots[i].check) {
-                    console.log(this.shots[i].getCollisionY());
+					this.collY = this.shots[i].getCollisionY();
+                    console.log(this.collY);
+					if(this.collY >= 0 && this.collY < 0.4 * Player.h){
+					//Legshot
+					}
+					else if(this.collY >= 0.4 * Player.h && this.collY < 0.8 * Player.h){
+					//Bodyshot
+					}
+					else if(this.collY >= 0.8 * Player.h && this.collY <= Player.h){
+					//Headshot
+					}
+					
                 }
             } else {
                 this.shots.splice(i);
