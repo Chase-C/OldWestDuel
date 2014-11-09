@@ -11,7 +11,9 @@ var Engine = function(w, h)
 	
 	this.gameState = new GameState(w, h);
 	this.menuState = new MenuState(w, h);
-	this.activeState = this.menuState;
+    this.activeState = null;
+
+    this.loadResources();
 }
 
 Engine.prototype =
@@ -26,14 +28,28 @@ Engine.prototype =
         var currTime = Date.now();
         var dt = currTime - this.time;
 
-		this.activeState.update(dt);
+        if (this.activeState) {
+            this.activeState.update(dt);
+        }
 
         this.time = currTime;
     },
 	
 	keyPress: function(keyCode)
     {
-        this.activeState.keyPress(keyCode);
+        if (this.activeState) {
+            this.activeState.keyPress(keyCode);
+        }
+    },
+
+    loadResources: function()
+    {
+        this.resources = new Resources((function() {
+            this.menuState.giveResources(this.resources);
+            this.gameState.giveResources(this.resources);
+
+            this.activeState = this.menuState;
+        }).bind(this));
     },
 
     // Functions for starting and stopping the simulation
@@ -44,15 +60,19 @@ Engine.prototype =
 
     draw: function(canvas)
     {	
-		this.activeState.draw(canvas);
+        if (this.activeState) {
+            this.activeState.draw(canvas);
+        }
     },
 	
 	startGame: function(stage){
 		this.menuState.mainMenuTheme.loop = false;
 		this.menuState.mainMenuTheme.pause();
 		this.menuState.mainMenuTheme.currentTime = 0;
+		this.activeState = this.gameState;
+        this.gameState.init();
+        this.gameState.chooseLevel(stage);
 		console.log("Game rounds started");
-		this.activeState = new GameState(this.w, this.h, stage);
 	},
 	
 }

@@ -5,16 +5,10 @@ var GameState = function(w, h, level)
 	this.collY = -1;
 	this.level = level;
 
-    this.desertBackground = new Image();
-    this.desertBackground.src = './images/bg_desert.png'
-	
-	this.finalDestinationBackground = new Image();
-	this.finalDestinationBackground.src = './images/finald.png';
-	
-	this.grottoBackground = new Image();
-	this.grottoBackground.src = './images/bg_grotto.png';
-	
-	this.activeBackground = this.desertBackground; //this.activeBackground should be set after ALL other background images are initialized
+    this.desertBackground = null;
+	this.finalDestinationBackground = null;
+	this.grottoBackground = null;
+	this.activeBackground = null;
 
 	this.finalDestinationTheme = new Audio("final_D.mp3");
 	this.finalDestinationTheme.loop = true;
@@ -29,7 +23,7 @@ var GameState = function(w, h, level)
 	
 	this.player1.setEnemy(this.player2);
 	this.player2.setEnemy(this.player1);
-	
+
     this.shots = [];
 	this.screenMessages = [];
     this.ui = new UI();
@@ -65,6 +59,15 @@ var GameState = function(w, h, level)
 
 GameState.prototype =
 {	
+    init: function()
+    {
+        this.player1.setChar(engine.p1Sel.c);
+        this.player1.setGun(engine.p1Sel.g);
+
+        this.player2.setChar(engine.p2Sel.c);
+        this.player2.setGun(engine.p2Sel.g);
+    },
+
     // Update the simulation each frame
     update: function(dt)
     {
@@ -173,6 +176,17 @@ GameState.prototype =
 	
 	},
 
+    giveResources: function(resources)
+    {
+        this.desertBackground = resources.bgDesert;
+        this.finalDestinationBackground = resources.bgFinalD;
+        this.grottoBackground = resources.bgGrotto;
+        this.activeBackground = this.desertBackground;
+
+        this.player1.giveResources(resources);
+        this.player2.giveResources(resources);
+    },
+
     setPlayerAngles: function()
     {
         var dx = this.player2.x - this.player1.x;
@@ -228,17 +242,16 @@ GameState.prototype =
         this.player1.draw(canvas);
         this.player2.draw(canvas);
 
-        for (var i = 0; i < this.shots.length; i++) {
-            this.shots[i].draw(canvas);
-        }
-		
 		for (var i = 0; i < this.screenMessages.length; i++){
 			this.screenMessages[i].draw(canvas);
 		
 		}
+        //for (var i = 0; i < this.shots.length; i++) {
+        //    this.shots[i].draw(canvas);
+        //}
 
-        this.ui.drawBar(canvas, this.player1, false);
-        this.ui.drawBar(canvas, this.player2, true);
+        //this.ui.drawBar(canvas, this.player1, false);
+        //this.ui.drawBar(canvas, this.player2, true);
         this.ui.drawScore(canvas, this.player1, false);
         this.ui.drawScore(canvas, this.player2, true);
     },

@@ -3,11 +3,8 @@ var StageSelection = function(w, h)
     this.w = w || 0;
     this.h = h || 0;
 	
-	this.backgroundImage = new Image();
-	this.backgroundImage.src = './images/stageselect.png';
-	
-	this.stageSelectHighlight = new Image();
-	this.stageSelectHighlight.src = './images/stage_selection_ring.png';
+	this.backgroundImage = null;
+	this.stageSelectHighlight = null;
 	
 	this.xSelect1 = 37 * 2;
 	this.ySelect1 = 150 * 2;
@@ -73,6 +70,12 @@ StageSelection.prototype =
 				break;
 		}
 	},
+
+    giveResources: function(resources)
+    {
+        this.backgroundImage = resources.bgStage;
+        this.stageSelectHighlight = resources.selectStage;
+    },
 
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },

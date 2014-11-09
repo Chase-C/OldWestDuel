@@ -3,14 +3,9 @@ var CharacterSelection = function(w, h)
     this.w = w || 0;
     this.h = h || 0;
 	
-	this.backgroundImage = new Image();
-	this.backgroundImage.src = './images/roster.png';
-	
-	this.p1Select = new Image();
-	this.p1Select.src = './images/p1select.png';
-	
-	this.p2Select = new Image();
-	this.p2Select.src = './images/p2select.png';
+	this.backgroundImage = null;
+	this.p1Select = null;
+	this.p2Select = null;
 	
 	this.xSelectP1 = 34 * 2;
 	this.ySelectP1 = 166 * 2;
@@ -55,21 +50,10 @@ CharacterSelection.prototype =
 			this.selectionNumberP2 = 0;
 		}
 	
-		//updates the position of the selection highligher
-		/*if(this.selectionNumber === 0){
-			this.currentSelectionX = this.xSelect1;
-			this.currentSelectionY = this.ySelect1;
-		}
-		else if(this.selectionNumber === 1){
-			this.currentSelectionX = this.xSelect2;
-			this.currentSelectionY = this.ySelect2;
-		}
-		else if(this.selectionNumber === 2){
-			this.currentSelectionX = this.xSelect3;
-			this.currentSelectionY = this.ySelect3;
-		}*/
 		this.currentSelectionXP1 = this.xSelectP1 + this.selectionNumberP1 * 58 * 2; //58 is the number of pixels between each character's image
 		this.currentSelectionXP2 = this.xSelectP2 + this.selectionNumberP2 * 58 * 2; //58 is the number of pixels between each character's image
+
+
     },
 
 	keyPress: function( keyCode)
@@ -90,10 +74,28 @@ CharacterSelection.prototype =
 			case 13: // Enter
 			case 32: // Spacebar
 				//Move to the StageSelection
+                engine.p1Sel = new Object('c', 'g');
+                engine.p1Sel.c = this.chars[this.selectionNumberP1].clone();
+                engine.p1Sel.g = this.guns[this.selectionNumberP1].clone();
+
+                engine.p2Sel = new Object('c', 'g');
+                engine.p2Sel.c = this.chars[this.selectionNumberP2].clone();
+                engine.p2Sel.g = this.guns[this.selectionNumberP2].clone();
+
 				engine.menuState.currentScreen = engine.menuState.stageSelection;
 				break;
 		}
 	},
+
+    giveResources: function(resources)
+    {
+        this.backgroundImage = resources.bgCharacter;
+        this.p1Select = resources.p1Select;
+        this.p2Select = resources.p2Select;
+
+        this.chars = resources.chars;
+        this.guns  = resources.guns;
+    },
 
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },
@@ -105,63 +107,20 @@ CharacterSelection.prototype =
     {
         canvas.clearRect(0, 0, this.w, this.h);
 		canvas.drawImage(this.backgroundImage, 0, 0, 820, 640);
-		var p1 = engine.gameState.player1;
-		var p2 = engine.gameState.player2;
+
+        this.chars[this.selectionNumberP1].drawFrame(canvas,
+                                                     0,
+                                                     0,
+                                                     this.previewX1,
+                                                     this.previewY1);
+
+        this.chars[this.selectionNumberP2].drawFrame(canvas,
+                                                     0,
+                                                     0,
+                                                     this.previewX2,
+                                                     this.previewY2);
+
 		
-		//-----------------------Note: Selection 3 is supposed to be clyde, but since he's a spreadsheet, it's fido for now------------------
-		//preview images for player 1
-		if(this.selectionNumberP1 === 0){
-			p1.currentImage = p1.ford;
-			canvas.drawImage(p1.ford, this.previewX1, this.previewY1, p1.ford.width * this.previewImageScale, p1.ford.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP1 === 1){
-			p1.currentImage = p1.grape;
-			canvas.drawImage(p1.grape, this.previewX1, this.previewY1, p1.grape.width * this.previewImageScale, p1.grape.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP1 === 2){
-			p1.currentImage = p1.becky;
-			canvas.drawImage(p1.becky, this.previewX1, this.previewY1, p1.becky.width * this.previewImageScale, p1.becky.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP1 === 3){
-			p1.currentImage = p1.fido;
-			canvas.drawImage(p1.fido, this.previewX1, this.previewY1, p1.fido.width * this.previewImageScale, p1.fido.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP1 === 4){
-			p1.currentImage = p1.bently;
-			canvas.drawImage(p1.bently, this.previewX1, this.previewY1, p1.bently.width * this.previewImageScale, p1.bently.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP1 === 5){
-			p1.currentImage = p1.fido;
-			canvas.drawImage(p1.fido, this.previewX1, this.previewY1, p1.fido.width * this.previewImageScale, p1.fido.height * this.previewImageScale);
-		}
-		
-		//preview images for player 2
-		if(this.selectionNumberP2 === 0){
-			p2.currentImage = p2.ford;
-			canvas.drawImage(p2.ford, this.previewX2, this.previewY2, p2.ford.width * this.previewImageScale, p2.ford.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP2 === 1){
-			p2.currentImage = p2.grape;
-			canvas.drawImage(p2.grape, this.previewX2, this.previewY2, p2.grape.width * this.previewImageScale, p2.grape.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP2 === 2){
-			p2.currentImage = p2.becky;
-			canvas.drawImage(p2.becky, this.previewX2, this.previewY2, p2.becky.width * this.previewImageScale, p2.becky.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP2 === 3){
-			p2.currentImage = p2.fido;
-			canvas.drawImage(p2.fido, this.previewX2, this.previewY2, p2.fido.width * this.previewImageScale, p2.fido.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP2 === 4){
-			p2.currentImage = p2.bently;
-			canvas.drawImage(p2.bently, this.previewX2, this.previewY2, p2.bently.width * this.previewImageScale, p2.bently.height * this.previewImageScale);
-		}
-		else if(this.selectionNumberP2 === 5){
-			p2.currentImage = p2.fido;
-			canvas.drawImage(p2.fido, this.previewX2, this.previewY2, p2.fido.width * this.previewImageScale, p2.fido.height * this.previewImageScale);
-		}
-		
-		//console.log(this.currentSelectionXP1, this.ySelectP1);
 		canvas.drawImage(this.p1Select, this.currentSelectionXP1, this.ySelectP1, 17 * 2, 17 * 2);
 		canvas.drawImage(this.p2Select, this.currentSelectionXP2, this.ySelectP2, 17 * 2, 17 * 2);
     },
