@@ -37,7 +37,7 @@ var GameState = function(w, h, level)
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
 	this.transY = 0;
 
-	this.chooseLevel(0);
+	this.chooseLevel(level);
 }
 
 GameState.prototype =
