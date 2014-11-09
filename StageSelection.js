@@ -67,6 +67,10 @@ StageSelection.prototype =
 				//Move to the GameState
 				engine.startGame(this.selectionNumber);
 				break;
+			case 27: //Escape key
+				//Quit to the main menu
+				engine.menuState.currentScreen = engine.menuState.characterSelection;
+				break;
 		}
 	},
 

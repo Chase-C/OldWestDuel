@@ -19,6 +19,8 @@ var Player = function(x, y, reverse)
 	this.enemy 		   = null;//A reference to the opposing player. this.enemy.enemy = this
 
     this.h = 0;
+	
+	this.characterSelection = 0; //which character the player's sprite is
 
     this.image = new Image();
     this.image.onload = (function() {
@@ -46,6 +48,7 @@ var Player = function(x, y, reverse)
 	this.grape = new Image();
 	this.grape.src = './images/grape.png';
 	
+	this.currentImage = this.becky;
 }
 
 Player.prototype =
@@ -117,7 +120,7 @@ Player.prototype =
             this.x = -this.x;
         }
 
-        canvas.drawImage(this.image, this.x, this.y, this.image.width * 2, this.image.height * 2);
+        canvas.drawImage(this.currentImage, this.x, this.y, this.currentImage.width * 2, this.currentImage.height * 2);
 
         if (this.reverse) {
             canvas.scale(-1,1);
