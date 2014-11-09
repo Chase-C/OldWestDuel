@@ -10,10 +10,12 @@ var Player = function(x, y, reverse)
     this.reverse = reverse;
 
     this.image = new Image();
+    this.image.onload = (function() {
+        this.w = 2 * this.image.width;
+        this.h = 2 * this.image.height;
+        console.log(this.w, this.h);
+    }).bind(this);
     this.image.src = './images/BigJoJo.png';
-	
-	this.w = 2 * this.image.width;
-	this.h = 2 * this.image.height;
 }
 
 Player.prototype =
