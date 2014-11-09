@@ -85,7 +85,7 @@ Player.prototype =
 
     shoot: function(enemy)
     {
-        var shot = new Shot(this.x, this.y + (this.h / 2), 0.2, enemy);
+        var shot = new Shot(this.x, this.y + (this.h / 2), 0.1, enemy);
         return shot;
     },
 	
