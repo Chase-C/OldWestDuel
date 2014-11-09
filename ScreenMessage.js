@@ -26,7 +26,7 @@ ScreenMessage.prototype =
 
     draw: function(canvas)
     {
-        canvas.fillStyle = '#FFFFFF';
+        canvas.fillStyle = '#FFFF00';
         canvas.font = '38px sans-serif';
         canvas.textBaseline = 'middle';
         canvas.textAlign = 'center';
