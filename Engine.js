@@ -48,6 +48,10 @@ Engine.prototype =
     },
 	
 	startGame: function(stage){
+		this.menuState.mainMenuTheme.loop = false;
+		this.menuState.mainMenuTheme.pause();
+		this.menuState.mainMenuTheme.currentTime = 0;
+		console.log("Game rounds started");
 		this.activeState = new GameState(this.w, this.h, stage);
 	},
 	

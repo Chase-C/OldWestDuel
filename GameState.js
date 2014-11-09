@@ -16,6 +16,12 @@ var GameState = function(w, h, level)
 	
 	this.activeBackground = this.desertBackground; //this.activeBackground should be set after ALL other background images are initialized
 
+	this.finalDestinationTheme = new Audio("final_D.mp3");
+	this.finalDestinationTheme.loop = true;
+	
+	this.desertTheme = new Audio("desert.mp3");
+	this.desertTheme.loop = true;
+	
     this.running = true;
 
     this.player1 = new Player(150, 0, false);
@@ -42,6 +48,13 @@ var GameState = function(w, h, level)
 	this.transY = 0;
 
 	this.chooseLevel(level);
+	
+	if(level === 0){
+		this.desertTheme.play();
+	}
+	else if(level === 1){
+		this.finalDestinationTheme.play();
+	}
 	
 	this.targetHeight = 0;
 }
@@ -178,6 +191,12 @@ GameState.prototype =
 			this.transX = 0;
 			this.transY = 0;
 			
+			this.finalDestinationTheme.pause();
+			this.finalDestinationTheme.currentTime = 0;
+			this.desertTheme.pause();
+			this.desertTheme.currentTime = 0;
+			engine.menuState.mainMenuTheme.loop = true; //restart main menu song
+			engine.menuState.mainMenuTheme.play();
 			engine.activeState = engine.menuState;
 		}
 	
