@@ -110,11 +110,19 @@ GameState.prototype =
 				//Crouch player 1
 				break;
             case 70: // 'f'
-                this.shots.push(this.player1.shoot(this.player2));
-                break;
+				if(this.player1.canShoot()){
+					this.shots.push(this.player1.shoot(this.player2));
+					
+				}
+				break;
+				
             case 190: // '.'
+				if(this.player2.canShoot()){
                 this.shots.push(this.player2.shoot(this.player1));
-                break;
+                
+				}
+				break;
+				
 			case 38: // Up arrow
 				this.player2.jump();
 				break;

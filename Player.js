@@ -8,6 +8,9 @@ var Player = function(x, y, reverse)
 	this.jumpMagnitude = -0.7;//negative because the y axis is inverted
 	this.gravity       = 0.005;
     this.reverse       = reverse;
+	
+	this.gunCD		   = 0;//The number of milliseconds before the gun can be fired.
+	this.gunMaxCD      = 1000;//The number of milliseconds between one shot and the next.
 
     this.enemyA        = 0;
     this.angle         = -1;
@@ -18,7 +21,7 @@ var Player = function(x, y, reverse)
 	
 	this.enemy 		   = null;//A reference to the opposing player. this.enemy.enemy = this
 
-    this.h = 0;
+    this.h = 0;//The actual height of the player
 
     this.image = new Image();
     this.image.onload = (function() {
@@ -38,7 +41,7 @@ Player.prototype =
     {
         var e = 0.005;
         var aDiff = this.angle - this.enemyA;
-
+		
         if (aDiff < 0) {
             if (this.da < 0 || aDiff < -e) {
                 this.da += 0.01;
@@ -48,6 +51,13 @@ Player.prototype =
                 this.da -= 0.01;
             }
         }
+		
+		this.gunCD -= dt;//tick the cooldown timer down
+		if(this.gunCD < 0){
+			//This is where you play the reload sound (there would be a bug if gunCD happened to reach exactly 0 then the reload sound wouldn't play
+			//But it is unlikely
+			this.gunCD = 0;
+		}
 
         this.da *= 0.9;
         this.angle += this.da;
@@ -80,8 +90,14 @@ Player.prototype =
 
     shoot: function(enemy)
     {
-        var shot = new Shot(this.x, this.y + (this.h / 2), this.angle, enemy);
-        return shot;
+	
+
+		var shot = new Shot(this.x, this.y + (this.h / 2), this.angle, enemy);
+		this.gunCD = this.gunMaxCD;
+		return shot;
+
+
+
     },
 	
 	reset: function(){
@@ -111,5 +127,15 @@ Player.prototype =
 	
 	setEnemy: function(enemy){
 		this.enemy = enemy;
+	},
+	
+	canShoot: function(){
+		if(this.gunCD <= 0){
+			return true;
+		}
+		
+		//otherwise
+		return false;
+	
 	}
 }
