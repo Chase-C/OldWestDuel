@@ -24,12 +24,10 @@ var Player = function(x, y, reverse)
     this.image.onload = (function() {
         this.w = 2 * this.image.width;
         this.h = 2 * this.image.height;
-        console.log(this.w, this.h);
 
         //adjust the y position so that sprites of all dimensions are properly aligned to the floor
         this.y -= this.image.height * 2;
         this.floorY = this.y;
-		console.log("Initialization y: " + this.y, this.h);
     }).bind(this);
     this.image.src = './images/BigJoJo.png';
 }
@@ -52,13 +50,6 @@ Player.prototype =
         }
 
         this.da *= 0.9;
-        //this.da *= 1 * Math.pow((Math.abs(this.angle - this.enemyA)), 10);
-        //this.da *= Math.min(1, (2 * Math.abs(this.angle - this.enemyA)) + 0.5);
-
-        //if (Math.abs(this.da) < Math.abs(this.angle - this.enemyA)) {
-        //    this.da = this.enemyA - this.angle;
-        //}
-
         this.angle += this.da;
 
         if (this.y != this.floorY) {//If the player is not on the floor, gravity accelerates them downward
@@ -78,7 +69,6 @@ Player.prototype =
     {
         if(this.y===this.floorY){//If you're on the ground
             this.velY = this.jumpMagnitude;//
-            console.log(this.velY);
         }
 
     },
@@ -89,7 +79,7 @@ Player.prototype =
 
     shoot: function(enemy)
     {
-        var shot = new Shot(this.x, this.y + (this.h / 2), 0.0, enemy);
+        var shot = new Shot(this.x, this.y + (this.h / 2), this.angle, enemy);
         return shot;
     },
 	
@@ -101,7 +91,6 @@ Player.prototype =
     {
         this.y      = y - (this.h);
         this.floorY = this.y;
-		console.log("setFloor y: " + this.y, this.h);
     },
 
     draw: function(canvas)

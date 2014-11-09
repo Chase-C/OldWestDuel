@@ -33,7 +33,7 @@ Shot.prototype =
 
         this.check = false;
 
-        if ((ret < this.enemy.y) || (this.ey > this.enemy.y + this.enemy.h)) {
+        if ((ret < this.enemy.y) || (ret > this.enemy.y + this.enemy.h)) {
             return (-1);
         }
 
