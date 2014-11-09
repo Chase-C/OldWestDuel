@@ -1,8 +1,9 @@
+body {
+    background-color: #444444;
+}
+
 #container {
     width: 820px;
     height: 640px;
     margin: auto;
-    padding: 0;
-    border: 0;
-    //left: 50%
 }
