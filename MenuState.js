@@ -80,6 +80,15 @@ MenuState.prototype =
     {
         canvas.clearRect(0, 0, this.w, this.h);
 		canvas.drawImage(this.backgroundImage, 0, 0, 820, 640);
+		if(this.selectionNumber === 0){
+			canvas.drawImage(engine.gameState.desertBackground, 43, 150, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
+		}
+		else if(this.selectionNumber === 1){
+			canvas.drawImage(engine.gameState.finalDestinationBackground, 43, 150, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
+		}
+		else if(this.selectionNumber === 2){
+			canvas.drawImage(engine.gameState.grottoBackground, 43, 120, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
+		}
 		
 		canvas.drawImage(this.stageSelectHighlight, this.currentSelectionX, this.currentSelectionY, 62 * 2, 40 * 2);
     },
