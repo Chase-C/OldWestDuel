@@ -42,7 +42,7 @@ var Resources = function(callback)
     this.chars = [this.sprFord, this.sprGrape, this.sprBecky, this.sprClyde, this.sprBently, this.sprFido];
     for (var i = 0; i < this.chars.length; i++) {
         this.chars[i].addAnim(3, 0,   0, 35, 31, 200, true);
-        this.chars[i].addAnim(2, 35,  0, 35, 31, 100, true);
+        this.chars[i].addAnim(2, 35,  0, 35, 31, 100, false);
         this.chars[i].addAnim(1, 70,  0, 35, 31, 100, true);
         this.chars[i].addAnim(2, 105, 0, 35, 31, 200, false);
     }
