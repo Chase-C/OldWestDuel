@@ -59,6 +59,10 @@ Player.prototype =
         var shot = new Shot(this.x, this.y + (this.h / 2), 0.2, enemy);
         return shot;
     },
+	
+	reset: function(){
+		
+	},
 
     draw: function(canvas)
     {

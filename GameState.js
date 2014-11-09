@@ -33,6 +33,9 @@ var GameState = function(w, h, level)
 
     this.winner = 0;
 	
+	this.roundNumber = 1;
+	this.maxRoundNumber = 3; //may change later
+	
 	this.gameIsEnding = false;
 	
 	this.isScreenShaking = true; //set this to true any time a screen shake should occur 
@@ -74,15 +77,6 @@ GameState.prototype =
 				this.isScreenShakingEnd = true;
 			}
 		}
-    },
-
-    // Reset the simulation
-    reset: function()
-    {
-        if(this.running == false) {
-            this.running = true;
-            Run();
-        }
     },
 
 	keyPress: function( keyCode)
@@ -157,6 +151,17 @@ GameState.prototype =
             this.shots[i].draw(canvas);
         }
     },
+	
+	//used to move on to the next round
+	reset: function(){
+		this.roundNumber++;
+		if(this.roundNumber > this.maxRoundNumber){
+			//Win/lose/end results
+		}
+		//everything below must be reset after every round
+		this.transX = 0;
+		this.transY = 0;
+	},
 	
 	chooseLevel: function(level){
 		//select the appropriate positions for the players based on the chosen background
