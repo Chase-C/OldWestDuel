@@ -28,6 +28,8 @@ var Player = function(x, y, reverse)
     this.bloodSprite.addAnim(3, 0, 0, 8, 8);
 
     this.h = 0;//The actual height of the player
+	
+	this.characterSelection = 0; //which character the player's sprite is
 
     this.image = new Image();
     this.image.onload = (function() {
@@ -39,6 +41,23 @@ var Player = function(x, y, reverse)
         this.floorY = this.y;
     }).bind(this);
     this.image.src = './images/BigJoJo.png';
+	
+	this.becky = new Image();
+	this.becky.src = './images/becky.png';
+	
+	this.bently = new Image();
+	this.bently.src = './images/bently.png';
+	
+	this.fido = new Image();
+	this.fido.src = './images/fido.png';
+	
+	this.ford = new Image();
+	this.ford.src = './images/ford.png';
+	
+	this.grape = new Image();
+	this.grape.src = './images/grape.png';
+	
+	this.currentImage = this.becky;
 }
 
 Player.prototype =
@@ -147,7 +166,7 @@ Player.prototype =
             this.x = -this.x;
         }
 
-        canvas.drawImage(this.image, this.x, this.y, this.image.width * 2, this.image.height * 2);
+        canvas.drawImage(this.currentImage, this.x, this.y, this.currentImage.width * 2, this.currentImage.height * 2);
 
         if (!this.bloodSprite.complete) {
             this.bloodSprite.draw(canvas, this.x + (0.7 * this.w), this.y + (this.h - this.colY) - 6);
