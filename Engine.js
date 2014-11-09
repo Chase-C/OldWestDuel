@@ -20,6 +20,7 @@ Engine.prototype =
     // Update the simulation each frame
     update: function()
     {
+		//console.log("Normal update occurring");
         if(this.winner > 0)
             return;
 
@@ -27,7 +28,43 @@ Engine.prototype =
         var dt = currTime - this.time;
 
         this.time = currTime;
+		
+
+		
+		this.player1.update(dt);
+		this.player2.update(dt);
+		
     },
+	
+	keyPress: function( keyCode)
+	{
+		switch(keyCode){
+			case 87:
+			
+				//Jump player 1
+				this.player1.jump();
+				console.log("p1jump");
+				break;
+				
+			
+			case 83:
+			
+				//Crouch player 1
+				break;
+			case 38:
+			
+				//Jump player 2
+				this.player2.jump();
+				console.log("p2jump");
+				break;
+			case 40:
+			
+				//Crouch player 2
+				break;
+			
+		}
+	
+	},
 
     // Reset the simulation
     reset: function()
