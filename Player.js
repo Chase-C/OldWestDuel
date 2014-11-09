@@ -18,8 +18,14 @@ var Player = function(x, y, reverse)
     this.maxDa         = 0.2;
 	
 	this.score 		   = 0;//The player's score that they have earned by shooting the opponent
-	
 	this.enemy 		   = null;//A reference to the opposing player. this.enemy.enemy = this
+    this.hit           = false;
+
+    this.gunSprite     = new Image();
+    this.gunSprite.src = './images/gun_blue.png';
+
+    this.bloodSprite   = new AnimSprite('./images/blood.png', 500, false);
+    this.bloodSprite.addAnim(3, 0, 0, 8, 8);
 
     this.h = 0;//The actual height of the player
 
@@ -70,6 +76,8 @@ Player.prototype =
 			}
 		}
 
+        this.da += this.velY / 40;
+
         this.da *= 0.9;
         this.angle += this.da;
 
@@ -84,13 +92,17 @@ Player.prototype =
             this.y = this.floorY;
             this.velY = 0;
         }
+
+        if (!this.bloodSprite.complete) {
+            this.bloodSprite.update(dt);
+        }
+
     },
 
     jump: function()
     {
         if(this.y===this.floorY){//If you're on the ground
             this.velY = this.jumpMagnitude;//
-            this.da -= 0.05;
         }
 
     },
@@ -121,6 +133,13 @@ Player.prototype =
         this.floorY = this.y;
     },
 
+    kill: function(colY)
+    {
+        this.colY = colY;
+        this.bloodSprite.complete = false;
+        this.hit = true;
+    },
+
     draw: function(canvas)
     {
         if (this.reverse) {
@@ -129,6 +148,10 @@ Player.prototype =
         }
 
         canvas.drawImage(this.image, this.x, this.y, this.image.width * 2, this.image.height * 2);
+
+        if (!this.bloodSprite.complete) {
+            this.bloodSprite.draw(canvas, this.x + (0.7 * this.w), this.y + (this.h - this.colY) - 6);
+        }
 
         if (this.reverse) {
             canvas.scale(-1,1);
