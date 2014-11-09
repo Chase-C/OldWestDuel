@@ -171,6 +171,7 @@ GameState.prototype =
                 break;
             case 83: // 's'
                 //Crouch player 1
+				this.player1.charSprite.changeAnim(1);
                 break;
             case 70: // 'f'
 				if(this.player1.canShoot() && !this.roundIsEnding){
@@ -192,6 +193,7 @@ GameState.prototype =
 				break;
 			case 40: // Down arrow
 				//Crouch player 2
+				this.player2.charSprite.changeAnim(1);
 				break;
 			case 27: //Escape key
 				//Quit to the main menu
