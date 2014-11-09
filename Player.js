@@ -1,13 +1,17 @@
 var Player = function(x, y, reverse)
 {	
-	this.floorY = y;
-    this.x = x || 0;
-    this.y = y || 0;
-	this.velY = 0;
-	this.velX = 0;
+    this.x             = x || 0;
+    this.y             = y || 0;
+	this.velY          = 0;
+	this.velX          = 0;
+	this.floorY        = y;
 	this.jumpMagnitude = -0.7;//negative because the y axis is inverted
-	this.gravity = 0.003;
-    this.reverse = reverse;
+	this.gravity       = 0.005;
+    this.reverse       = reverse;
+
+    this.enemyA        = 0;
+    this.angle         = 0;
+    this.da            = 0;
 
     this.image = new Image();
     this.image.onload = (function() {
@@ -19,7 +23,6 @@ var Player = function(x, y, reverse)
         this.y -= this.image.height * 2;
         this.floorY = this.y;
     }).bind(this);
-
     this.image.src = './images/BigJoJo.png';
 }
 
@@ -27,11 +30,18 @@ Player.prototype =
 {
     update: function(dt)
     {
+        if (this.angle < this.enemyA) {
+            this.da += 0.01;
+        } else {
+            this.da -= 0.01;
+        }
+
+        this.angle += this.da;
 
         if (this.y != this.floorY) {//If the player is not on the floor, gravity accelerates them downward
             this.velY += this.gravity * dt;
         }
-        //console.log(this.velY);
+
         this.y += this.velY * dt;//Move based on the current x and y velocities
         this.x += this.velX * dt;
 
@@ -58,6 +68,12 @@ Player.prototype =
     {
         var shot = new Shot(this.x, this.y + (this.h / 2), 0.2, enemy);
         return shot;
+    },
+
+    setFloor: function(y)
+    {
+        this.y      = y - (this.image.height * 2);
+        this.floorY = y;
     },
 
     draw: function(canvas)
