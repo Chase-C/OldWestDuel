@@ -113,14 +113,9 @@ Player.prototype =
 
     shoot: function(enemy)
     {
-	
-
 		var shot = new Shot(this.x, this.y + (this.h / 2), this.angle, enemy);
 		this.gunCD = this.gunMaxCD;
 		return shot;
-
-
-
     },
 	
 	reset: function(){
@@ -146,6 +141,12 @@ Player.prototype =
             canvas.scale(-1,1);
             this.x = -this.x;
         }
+
+        canvas.translate(this.x + this.w - 4, this.y + (this.h / 2) - 8);
+        canvas.rotate(-this.angle);
+        canvas.drawImage(this.gunSprite, 0, 0, this.gunSprite.width * 2, this.gunSprite.height * 2);
+        canvas.rotate(this.angle);
+        canvas.translate(-(this.x + this.w - 4), -(this.y + (this.h / 2) - 8));
 
         canvas.drawImage(this.image, this.x, this.y, this.image.width * 2, this.image.height * 2);
 
