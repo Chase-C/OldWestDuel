@@ -25,6 +25,9 @@ var GameState = function(w, h, level)
     this.ui = new UI();
     this.winner = 0;
 	
+	this.roundNumber = 1;
+	this.maxRoundNumber = 3; //may change later
+	
 	this.gameIsEnding = false;
 	
 	this.isScreenShaking = true; //set this to true any time a screen shake should occur 
@@ -69,15 +72,6 @@ GameState.prototype =
 				this.isScreenShakingEnd = true;
 			}
 		}
-    },
-
-    // Reset the simulation
-    reset: function()
-    {
-        if(this.running == false) {
-            this.running = true;
-            Run();
-        }
     },
 
 	keyPress: function( keyCode)
@@ -165,6 +159,17 @@ GameState.prototype =
         this.ui.drawBar(canvas, this.player1, false);
         this.ui.drawBar(canvas, this.player2, true);
     },
+	
+	//used to move on to the next round
+	reset: function(){
+		this.roundNumber++;
+		if(this.roundNumber > this.maxRoundNumber){
+			//Win/lose/end results
+		}
+		//everything below must be reset after every round
+		this.transX = 0;
+		this.transY = 0;
+	},
 	
 	chooseLevel: function(level){
 		//select the appropriate positions for the players based on the chosen background

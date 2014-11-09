@@ -53,15 +53,6 @@ MenuState.prototype =
 		}
     },
 
-    // Reset the simulation
-    reset: function()
-    {
-        if(this.running == false) {
-            this.running = true;
-            Run();
-        }
-    },
-
 	keyPress: function( keyCode)
 	{
 		switch(keyCode){
