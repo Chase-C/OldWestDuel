@@ -1,31 +1,28 @@
-var Engine = function(w, h)
+var GameState = function(w, h)
 {
     this.w = w || 0;
     this.h = h || 0;
 
-    //this.backgroundImage = new Image();
-    //this.backgroundImage.src = './images/bg_grotto.png'
+    this.backgroundImage = new Image();
+    this.backgroundImage.src = './images/bg_grotto.png'
 
     this.running = true;
     this.time = Date.now();
 
-    //this.player1 = new Player(150, 340, false);
-    //this.player2 = new Player(670, 340, true);
+    this.player1 = new Player(150, 340, false);
+    this.player2 = new Player(670, 340, true);
 
     this.winner = 0;
 	
-	this.gameState = new GameState(w, h);
-	this.activeState = this.gameState;
-	
-	/*this.isScreenShaking = true; //set this to true any time a screen shake should occur 
+	this.isScreenShaking = true; //set this to true any time a screen shake should occur 
 	this.isScreenShakingEnd = false;
 	this.screenShakeTimer = 0;
 	this.shakeMagnitude = 12; //how far away the camera shakes around its original point, in pixels
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
-	this.transY = 0;*/
+	this.transY = 0;
 }
 
-Engine.prototype =
+GameState.prototype =
 {
     // Update the simulation each frame
     update: function()
@@ -38,24 +35,20 @@ Engine.prototype =
 
         this.time = currTime;
 		
-		this.activeState.update();
-		
 		//code for screen shaking
-		/*if(this.isScreenShaking){
+		if(this.isScreenShaking){
 			this.screenShakeTimer += dt;
 			if(this.screenShakeTimer >= 1000){ //how many milliseconds the screen shaking lasts
 				this.screenShakeTimer = 0;
 				this.isScreenShaking = false;
 				this.isScreenShakingEnd = true;
 			}
-		}*/
+		}
     },
 
     // Reset the simulation
     reset: function()
     {
-        this.planets = [];
-        this.particles = [];
         if(this.running == false) {
             this.running = true;
             Run();
@@ -70,7 +63,7 @@ Engine.prototype =
 
     draw: function(canvas)
     {
-		/*if(this.isScreenShaking){
+		if(this.isScreenShaking){
 			canvas.translate(-this.transX, -this.transY); //move the canvas back to its origin (0, 0)
 			var newX = Math.random() * this.shakeMagnitude * 2 - this.shakeMagnitude;
 			var newY = Math.random() * this.shakeMagnitude * 2 - this.shakeMagnitude;
@@ -89,8 +82,6 @@ Engine.prototype =
         canvas.drawImage(this.backgroundImage, 0, 0, 820, 640);
 
         this.player1.draw(canvas);
-        this.player2.draw(canvas);*/
-
-		this.activeState.draw(canvas);
+        this.player2.draw(canvas);
     },
 }
