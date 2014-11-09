@@ -30,34 +30,33 @@ var Player = function(x, y, reverse)
         this.y -= this.image.height * 2;
         this.floorY = this.y;
     }).bind(this);
-    this.image.src = './images/BigBigJoJo.png';
+    this.image.src = './images/BigJoJo.png';
 }
 
 Player.prototype =
 {
     update: function(dt)
     {
-        if (this.angle < this.enemyA) {
-            var mod = 1;
-            if (this.da > 0) {
-                mod = (1 - Math.min(1, this.da / this.maxDa));
-            }
+        var e = 0.005;
+        var aDiff = this.angle - this.enemyA;
 
-            this.da += 0.01 * mod;
-        } else {
-            var mod = 1;
-            if (this.da < 0) {
-                mod = (1 - Math.min(1, -this.da / this.maxDa));
+        if (aDiff < 0) {
+            if (this.da < 0 || aDiff < -e) {
+                this.da += 0.01;
             }
-
-            this.da -= 0.01 * mod;
+        } else if (aDiff > 0) {
+            if (this.da > 0 || aDiff > e) {
+                this.da -= 0.01;
+            }
         }
 
         this.da *= 0.9;
+        //this.da *= 1 * Math.pow((Math.abs(this.angle - this.enemyA)), 10);
+        //this.da *= Math.min(1, (2 * Math.abs(this.angle - this.enemyA)) + 0.5);
 
-        if (Math.abs(this.da) < Math.abs(this.angle - this.enemyA)) {
-            this.da = this.enemyA - this.angle;
-        }
+        //if (Math.abs(this.da) < Math.abs(this.angle - this.enemyA)) {
+        //    this.da = this.enemyA - this.angle;
+        //}
 
         this.angle += this.da;
 

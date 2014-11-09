@@ -16,7 +16,9 @@ UI.prototype =
             x = 16;
         }
 
-        var px = ((width / (Math.PI / 8)) * (player.angle - player.enemyA)) + (x + (width / 2));
+        var aDiff = Math.min(0.5, Math.max(-0.5, (4 * (player.angle - player.enemyA)) / Math.PI));
+        var px = (width * aDiff) + (x + (width / 2));
+
 
         //canvas.strokeStyle = '#FFFFFF';
         canvas.strokeStyle = '#333333';
