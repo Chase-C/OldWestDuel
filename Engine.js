@@ -9,6 +9,9 @@ var Engine = function(w, h)
     this.running = true;
     this.time = Date.now();
 
+    this.player1 = new Player(150, 340, false);
+    this.player2 = new Player(670, 340, true);
+
     this.winner = 0;
 }
 
@@ -47,6 +50,9 @@ Engine.prototype =
     {
         canvas.clearRect(0, 0, this.w, this.h);
         canvas.drawImage(this.backgroundImage, 0, 0, 820, 640);
+
+        this.player1.draw(canvas);
+        this.player2.draw(canvas);
 
         //for(i = 0; i < this.planets.length; i++) {
         //    this.planets[i].draw(canvas);
