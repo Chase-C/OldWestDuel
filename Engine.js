@@ -73,5 +73,13 @@ Engine.prototype =
 		this.activeState = this.gameState;
         this.gameState.init();
         this.gameState.chooseLevel(stage);
+		
+		//needed so that the stage songs actually start playing
+		if(stage === 0){
+			this.gameState.desertTheme.play();
+		}
+		else if(stage === 1){
+			this.gameState.finalDestinationTheme.play();
+		}
 	},
 }
