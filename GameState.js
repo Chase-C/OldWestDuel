@@ -139,7 +139,7 @@ GameState.prototype =
         var dy = this.player2.y - this.player1.y;
         var angle = Math.atan2(dy, dx);
 
-        this.player1.enemyA = angle;
+        this.player1.enemyA = -angle;
         this.player2.enemyA = angle;
     },
 

@@ -69,6 +69,7 @@ Player.prototype =
     {
         if(this.y===this.floorY){//If you're on the ground
             this.velY = this.jumpMagnitude;//
+            this.da -= 0.05;
         }
 
     },
