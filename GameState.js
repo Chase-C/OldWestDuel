@@ -51,6 +51,10 @@ GameState.prototype =
     // Update the simulation each frame
     update: function(dt)
     {
+		if(this.player1.hit || this.player2.hit){
+			this.reset();
+		}
+		
         if(this.winner > 0)
             return;
 

@@ -43,11 +43,12 @@ Engine.prototype =
     isRunning: function() { return this.running },
 
     draw: function(canvas)
-    {
+    {	
 		this.activeState.draw(canvas);
     },
 	
 	startGame: function(stage){
 		this.activeState = new GameState(this.w, this.h, stage);
-	}
+	},
+	
 }
