@@ -29,54 +29,6 @@ var CharacterSelection = function(w, h)
 	this.selectionNumberP2 = 0;
 
     this.running = true;
-	
-	this.bently1 = "Bently";
-	this.bently2 = "Moxie: 8";
-	this.bently3 = "Cojones: 8";
-	this.bently4 = "Swagger: 4";
-	this.bently5 = "Grit: 4";
-	this.bently6 = "Hustle: 5";
-	this.bently7 = "Total: 29";
-	
-	this.clyde1 = "Clyde";
-	this.clyde2 = "Moxie: 4";
-	this.clyde3 = "Cojones: 4";
-	this.clyde4 = "Swagger: 8";
-	this.clyde5 = "Grit: 7";
-	this.clyde6 = "Hustle: 6";
-	this.clyde7 = "Total: 29";
-	
-	this.grape1 = "Grape";
-	this.grape2 = "Moxie: 4";
-	this.grape3 = "Cojones: 3";
-	this.grape4 = "Swagger: 10";
-	this.grape5 = "Grit: 3";
-	this.grape6 = "Hustle: 9";
-	this.grape7 = "Total: 29";
-	
-	this.fido1 = "Fido";
-	this.fido2 = "Moxie: 7";
-	this.fido3 = "Cojones: 5";
-	this.fido4 = "Swagger: 6";
-	this.fido5 = "Grit: 1";
-	this.fido6 = "Hustle: 10";
-	this.fido7 = "Total: 29";
-	
-	this.ford1 = "Ford";
-	this.ford2 = "Moxie: 7";
-	this.ford3 = "Cojones: 8";
-	this.ford4 = "Swagger: 3";
-	this.ford5 = "Grit: 8";
-	this.ford6 = "Hustle: 3";
-	this.ford7 = "Total: 29";
-	
-	this.becky1 = "Becky";
-	this.becky2 = "Moxie: 6";
-	this.becky3 = "Cojones: 0";
-	this.becky4 = "Swagger: 3";
-	this.becky5 = "Grit: 6";
-	this.becky6 = "Hustle: 7";
-	this.becky7 = "Total: 22";
 }
 
 CharacterSelection.prototype =
@@ -155,6 +107,65 @@ CharacterSelection.prototype =
     {
         canvas.clearRect(0, 0, this.w, this.h);
 		canvas.drawImage(this.backgroundImage, 0, 0, 820, 640);
+<<<<<<< HEAD
+		var p1 = engine.gameState.player1;
+		var p2 = engine.gameState.player2;
+		
+		//-----------------------Note: Selection 3 is supposed to be clyde, but since he's a spreadsheet, it's fido for now------------------
+		//preview images for player 1
+		if(this.selectionNumberP1 === 0){
+			p1.currentImage = p1.ford;
+			canvas.drawImage(p1.ford, this.previewX1, this.previewY1, p1.ford.width * this.previewImageScale, p1.ford.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 1){
+			p1.currentImage = p1.grape;
+			canvas.drawImage(p1.grape, this.previewX1, this.previewY1, p1.grape.width * this.previewImageScale, p1.grape.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 2){
+			p1.currentImage = p1.becky;
+			canvas.drawImage(p1.becky, this.previewX1, this.previewY1, p1.becky.width * this.previewImageScale, p1.becky.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 3){
+			p1.currentImage = p1.fido;
+			canvas.drawImage(p1.fido, this.previewX1, this.previewY1, p1.fido.width * this.previewImageScale, p1.fido.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 4){
+			p1.currentImage = p1.bently;
+			canvas.drawImage(p1.bently, this.previewX1, this.previewY1, p1.bently.width * this.previewImageScale, p1.bently.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 5){
+			p1.currentImage = p1.fido;
+			canvas.drawImage(p1.fido, this.previewX1, this.previewY1, p1.fido.width * this.previewImageScale, p1.fido.height * this.previewImageScale);
+		}
+		
+		//preview images for player 2
+		if(this.selectionNumberP2 === 0){
+			p2.currentImage = p2.ford;
+			canvas.drawImage(p2.ford, this.previewX2, this.previewY2, p2.ford.width * this.previewImageScale, p2.ford.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 1){
+			p2.currentImage = p2.grape;
+			canvas.drawImage(p2.grape, this.previewX2, this.previewY2, p2.grape.width * this.previewImageScale, p2.grape.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 2){
+			p2.currentImage = p2.becky;
+			canvas.drawImage(p2.becky, this.previewX2, this.previewY2, p2.becky.width * this.previewImageScale, p2.becky.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 3){
+			p2.currentImage = p2.fido;
+			canvas.drawImage(p2.fido, this.previewX2, this.previewY2, p2.fido.width * this.previewImageScale, p2.fido.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 4){
+			p2.currentImage = p2.bently;
+			canvas.drawImage(p2.bently, this.previewX2, this.previewY2, p2.bently.width * this.previewImageScale, p2.bently.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 5){
+			p2.currentImage = p2.fido;
+			canvas.drawImage(p2.fido, this.previewX2, this.previewY2, p2.fido.width * this.previewImageScale, p2.fido.height * this.previewImageScale);
+		}
+		
+		//console.log(this.currentSelectionXP1, this.ySelectP1);
+=======
 
         this.chars[this.selectionNumberP1].drawFrame(canvas,
                                                      0,
@@ -168,7 +179,7 @@ CharacterSelection.prototype =
                                                      this.previewX2,
                                                      this.previewY2);
 
-		
+>>>>>>> aad8a5523f528cc4e09055c0e93cfd11daa09837
 		canvas.drawImage(this.p1Select, this.currentSelectionXP1, this.ySelectP1, 17 * 2, 17 * 2);
 		canvas.drawImage(this.p2Select, this.currentSelectionXP2, this.ySelectP2, 17 * 2, 17 * 2);
     },
