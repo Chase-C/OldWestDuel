@@ -67,6 +67,12 @@ Player.prototype =
             }
         }
 		
+        if (this.charSprite.curr === 1) {
+            if (this.charSprite.anims[1].complete) {
+                this.charSprite.changeAnim(0);
+            }
+        }
+
         this.da += this.velY / 40;
 
         this.da *= 0.9;
