@@ -11,6 +11,8 @@ var GameState = function(w, h)
     this.player1 = new Player(150, 340, false);
     this.player2 = new Player(670, 340, true);
 
+    this.shots = [];
+
     this.winner = 0;
 	
 	this.isScreenShaking = true; //set this to true any time a screen shake should occur 
@@ -31,6 +33,17 @@ GameState.prototype =
 
         this.player1.update(dt);
         this.player2.update(dt);
+
+        for (var i = 0; i < this.shots.length; i++) {
+            if (this.shots[i].active) {
+                this.shots[i].update(dt);
+                if (this.shots[i].check) {
+                    console.log(this.shots[i].getCollisionY());
+                }
+            } else {
+                this.shots.splice(i);
+            }
+        }
 		
 		//code for screen shaking
 		if(this.isScreenShaking){
@@ -55,26 +68,22 @@ GameState.prototype =
 	keyPress: function( keyCode)
 	{
 		switch(keyCode){
-			case 87:
-			
-				//Jump player 1
+			case 87: // 'w'
 				this.player1.jump();
-				console.log("p1jump");
 				break;
-				
-			
-			case 83:
-			
+			case 83: // 's'
 				//Crouch player 1
 				break;
-			case 38:
-			
-				//Jump player 2
+            case 70: // 'f'
+                this.shots.push(this.player1.shoot(this.player2));
+                break;
+            case 190: // '.'
+                this.shots.push(this.player2.shoot(this.player1));
+                break;
+			case 38: // Up arrow
 				this.player2.jump();
-				console.log("p2jump");
 				break;
-			case 40:
-			
+			case 40: // Down arrow
 				//Crouch player 2
 				break;
 			
@@ -110,5 +119,9 @@ GameState.prototype =
 
         this.player1.draw(canvas);
         this.player2.draw(canvas);
+
+        for (var i = 0; i < this.shots.length; i++) {
+            this.shots[i].draw(canvas);
+        }
     },
 }

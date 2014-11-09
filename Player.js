@@ -12,29 +12,45 @@ var Player = function(x, y, reverse)
     this.image = new Image();
     this.image.src = './images/BigJoJo.png';
 	
-	
+	this.w = 2 * this.image.width;
+	this.h = 2 * this.image.height;
 }
 
 Player.prototype =
 {
     update: function(dt)
     {
-	
-	if(this.y!=this.floorY){//If the player is not on the floor, gravity accelerates them downward
-		
-		this.velY += this.gravity * dt;
-		console.log(this.velY);
-	}
-	//console.log(this.velY);
-	this.y += this.velY * dt;//Move based on the current x and y velocities
-	this.x += this.velX * dt;
-	
-	if(this.y>this.floorY){
-		this.y = this.floorY;
-		this.velY = 0;
-		console.log("Set to 0");
-	}
-	
+
+        if (this.y != this.floorY) {//If the player is not on the floor, gravity accelerates them downward
+            this.velY += this.gravity * dt;
+        }
+        //console.log(this.velY);
+        this.y += this.velY * dt;//Move based on the current x and y velocities
+        this.x += this.velX * dt;
+
+        if (this.y > this.floorY) {
+            this.y = this.floorY;
+            this.velY = 0;
+        }
+    },
+
+    jump: function()
+    {
+        if(this.y===this.floorY){//If you're on the ground
+            this.velY = this.jumpMagnitude;//
+            console.log(this.velY);
+        }
+
+    },
+
+    duck: function()
+    {
+    },
+
+    shoot: function(enemy)
+    {
+        var shot = new Shot(this.x, this.y + (this.h / 2), 0.2, enemy);
+        return shot;
     },
 
     draw: function(canvas)
@@ -50,13 +66,5 @@ Player.prototype =
             canvas.scale(-1,1);
             this.x = -this.x;
         }
-    },
-	
-	jump: function(){
-		if(this.y===this.floorY){//If you're on the ground
-			this.velY = this.jumpMagnitude;//
-			console.log(this.velY);
-		}
-	
-	}
+    }
 }
