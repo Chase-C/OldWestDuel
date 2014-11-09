@@ -81,5 +81,8 @@ Engine.prototype =
 		else if(stage === 1){
 			this.gameState.finalDestinationTheme.play();
 		}
+		else if(stage === 2){
+			this.gameState.grottoTheme.play();
+		}
 	},
 }
