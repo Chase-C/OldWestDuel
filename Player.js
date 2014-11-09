@@ -25,8 +25,9 @@ var Player = function(x, y, reverse)
         //adjust the y position so that sprites of all dimensions are properly aligned to the floor
         this.y -= this.image.height * 2;
         this.floorY = this.y;
+		console.log("Initialization y: " + this.y, this.h);
     }).bind(this);
-    this.image.src = './images/BigBigJoJo.png';
+    this.image.src = './images/BigJoJo.png';
 }
 
 Player.prototype =
@@ -95,8 +96,9 @@ Player.prototype =
 
     setFloor: function(y)
     {
-        this.y      = y - (this.h * 2);
-        this.floorY = y;
+        this.y      = y - (this.h);
+        this.floorY = this.y;
+		console.log("setFloor y: " + this.y, this.h);
     },
 
     draw: function(canvas)
