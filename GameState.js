@@ -18,19 +18,11 @@ var GameState = function(w, h, level)
 
     this.running = true;
 
-	//select the appropriate positions for the players based on the chosen background
-	/*if(this.activeBackground === this.desertBackground){
-		this.player1 = new Player(150, 521, false);
-		this.player2 = new Player(670, 521, true);
-	}
-	else if(this.activeBackground === this.finalDestinationBackground){
-		this.player1 = new Player(240, 401, false);
-		this.player2 = new Player(580, 401, true);
-	}*/
-	this.chooseLevel(this.level);
-
+    this.player1 = new Player(150, 0, false);
+    this.player2 = new Player(670, 0, true);
     this.shots = [];
 
+    this.ui = new UI();
     this.winner = 0;
 	
 	this.gameIsEnding = false;
@@ -41,6 +33,8 @@ var GameState = function(w, h, level)
 	this.shakeMagnitude = 12; //how far away the camera shakes around its original point, in pixels
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
 	this.transY = 0;
+
+	this.chooseLevel(0);
 }
 
 GameState.prototype =
@@ -53,6 +47,7 @@ GameState.prototype =
 
         this.player1.update(dt);
         this.player2.update(dt);
+        this.setPlayerAngles();
 
         for (var i = 0; i < this.shots.length; i++) {
             if (this.shots[i].active) {
@@ -114,6 +109,16 @@ GameState.prototype =
 	
 	},
 
+    setPlayerAngles: function()
+    {
+        var dx = this.player2.x - this.player1.x;
+        var dy = this.player2.y - this.player1.y;
+        var angle = Math.atan2(dy, dx);
+
+        this.player1.enemyA = angle;
+        this.player2.enemyA = angle;
+    },
+
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },
     pause: function() { this.running = false },
@@ -156,6 +161,9 @@ GameState.prototype =
         for (var i = 0; i < this.shots.length; i++) {
             this.shots[i].draw(canvas);
         }
+
+        this.ui.drawBar(canvas, this.player1, false);
+        this.ui.drawBar(canvas, this.player2, true);
     },
 	
 	chooseLevel: function(level){
@@ -163,20 +171,20 @@ GameState.prototype =
 		if(level === 0){ //0 is desert
 			this.activeBackground = this.desertBackground;
 			var yPos = 551;
-			this.player1 = new Player(150, yPos, false);
-			this.player2 = new Player(670, yPos, true);
+			this.player1.setFloor(yPos);
+			this.player2.setFloor(yPos);
 		}
 		else if(level === 1){ //1 is final destination
 			this.activeBackground = this.finalDestinationBackground;
 			var yPos = 431;
-			this.player1 = new Player(240, yPos, false);
-			this.player2 = new Player(580, yPos, true);
+			this.player1.setFloor(yPos);
+			this.player2.setFloor(yPos);
 		}
 		else if(level === 2){ //2 is grotto
 			this.activeBackground = this.grottoBackground;
 			var yPos = 431;
-			this.player1 = new Player(150, yPos, false);
-			this.player2 = new Player(670, yPos, true);
+			this.player1.setFloor(yPos);
+			this.player2.setFloor(yPos);
 		}
 	}
 }
