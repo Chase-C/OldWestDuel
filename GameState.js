@@ -40,6 +40,7 @@ GameState.prototype =
 
         this.player1.update(dt);
         this.player2.update(dt);
+        this.setPlayerAngles();
 
         for (var i = 0; i < this.shots.length; i++) {
             if (this.shots[i].active) {
@@ -97,6 +98,16 @@ GameState.prototype =
 		}
 	
 	},
+
+    setPlayerAngles: function()
+    {
+        var dx = this.player2.x - this.player1.x;
+        var dy = this.player2.y - this.player1.y;
+        var angle = Math.atan2(dy, dx);
+
+        this.player1.enemyA = angle;
+        this.player2.enemyA = angle;
+    },
 
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },

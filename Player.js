@@ -10,8 +10,9 @@ var Player = function(x, y, reverse)
     this.reverse       = reverse;
 
     this.enemyA        = 0;
-    this.angle         = 0;
+    this.angle         = -1;
     this.da            = 0;
+    this.maxDa         = 0.2;
 
     this.image = new Image();
     this.image.onload = (function() {
@@ -31,9 +32,19 @@ Player.prototype =
     update: function(dt)
     {
         if (this.angle < this.enemyA) {
-            this.da += 0.01;
+            var mod = 1;
+            if (this.da > 0) {
+                mod = (1 - Math.abs(this.da / this.maxDa));
+            }
+
+            this.da += 0.02 * mod;
         } else {
-            this.da -= 0.01;
+            var mod = 1;
+            if (this.da < 0) {
+                mod = (1 - Math.abs(this.da / this.maxDa));
+            }
+
+            this.da -= 0.02 * mod;
         }
 
         this.angle += this.da;

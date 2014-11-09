@@ -16,7 +16,7 @@ UI.prototype =
             x = 16;
         }
 
-        var px = ((width / (2 * (Math.PI / 3))) * (player.angle - player.enemyA)) + (x + (width / 2));
+        var px = ((width / (Math.PI / 2)) * (player.angle - player.enemyA)) + (x + (width / 2));
 
         //canvas.strokeStyle = '#FFFFFF';
         canvas.strokeStyle = '#333333';
@@ -31,8 +31,8 @@ UI.prototype =
         canvas.stroke();
 
         canvas.beginPath();
-        canvas.moveTo(x + (width / 2), 17);
-        canvas.lineTo(x + (width / 2), 47);
+        canvas.moveTo(px, 17);
+        canvas.lineTo(px, 47);
         canvas.lineWidth   = 3;
         canvas.strokeStyle = '#FF5555';
         canvas.stroke();
