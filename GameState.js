@@ -118,7 +118,7 @@ GameState.prototype =
 							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "HEADSHOT! +6", this.messageDuration, 0));
                         }
 						
-						console.log(this.screenMessages.length);
+						//console.log(this.screenMessages.length);
 
                         target.kill(colY);
                     }
@@ -320,7 +320,7 @@ GameState.prototype =
         this.player2.setTimer(drawTime);
 
         this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Get Ready.", 1500, 0));
-        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Draw!", 1000, drawTime * 1000));
+        //this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Draw!", 1000, 300));
 	},
 	
 	chooseLevel: function(level){
