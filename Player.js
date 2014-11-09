@@ -52,11 +52,22 @@ Player.prototype =
             }
         }
 		
-		this.gunCD -= dt;//tick the cooldown timer down
-		if(this.gunCD < 0){
+
+		if(this.gunCD > 0){//Setting it from 0 to -delta would cause the reload sound to play constantly - would be game breaking.
+		
+			this.gunCD -= dt;//tick the cooldown timer down
 			//This is where you play the reload sound (there would be a bug if gunCD happened to reach exactly 0 then the reload sound wouldn't play
 			//But it is unlikely
-			this.gunCD = 0;
+			if(this.gunCD == 0){
+				this.gunCD = -1;//This way you won't get a 1/delta bug where the reload sound won't play
+			}
+			
+			if(this.gunCD < 0){
+				//Play the reload sound here!!
+				
+				this.gunCD = 0;//Set it to 0 so the game knows not to play the reload sound again.
+				
+			}
 		}
 
         this.da *= 0.9;
