@@ -27,8 +27,15 @@ var CharacterSelection = function(w, h)
 	
 	this.selectionNumberP1 = 0; //0 to 5 for the 6 characters
 	this.selectionNumberP2 = 0;
+	
+	this.statOriginX = 175;
+	this.statOriginY = 95;
+	this.distanceBetweenStatLines = 18;
+	this.statOriginX2 = 660;
 
     this.running = true;
+	
+	this.selectSound = new Audio('SelectSound.wav');
 	
 	this.bently1 = "Bently";
 	this.bently2 = "Moxie: 8";
@@ -122,6 +129,7 @@ CharacterSelection.prototype =
 			case 13: // Enter
 			case 32: // Spacebar
 				//Move to the StageSelection
+				this.selectSound.play();
                 engine.p1Sel = new Object('c', 'g');
                 engine.p1Sel.c = this.chars[this.selectionNumberP1].clone();
                 engine.p1Sel.g = this.guns[this.selectionNumberP1].clone();
@@ -170,6 +178,135 @@ CharacterSelection.prototype =
 
 		canvas.drawImage(this.p1Select, this.currentSelectionXP1, this.ySelectP1, 17 * 2, 17 * 2);
 		canvas.drawImage(this.p2Select, this.currentSelectionXP2, this.ySelectP2, 17 * 2, 17 * 2);
+		
+		canvas.fillStyle = '#FFFFFF';
+        canvas.font = '18px sans-serif';
+        canvas.textBaseline = 'middle';
+        canvas.textAlign = 'center';
+		
+		switch(this.selectionNumberP1){
+			case 0:	
+			canvas.fillText( this.ford1, this.statOriginX, this.statOriginY);
+			canvas.fillText( this.ford2, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.ford3, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.ford4, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.ford5, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.ford6, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.ford7, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+			case 1:
+			canvas.fillText( this.grape1, this.statOriginX, this.statOriginY);
+			canvas.fillText( this.grape2, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.grape3, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.grape4, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.grape5, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.grape6, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.grape7, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+
+
+			case 2:
+			canvas.fillText( this.becky1, this.statOriginX, this.statOriginY);
+			canvas.fillText( this.becky2, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.becky3, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.becky4, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.becky5, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.becky6, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.becky7, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 6);
+			
+			break;
+			case 3:
+			canvas.fillText( this.clyde1, this.statOriginX, this.statOriginY);
+			canvas.fillText( this.clyde2, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.clyde3, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.clyde4, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.clyde5, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.clyde6, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.clyde7, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+			case 4:
+			canvas.fillText( this.bently1, this.statOriginX, this.statOriginY);
+			canvas.fillText( this.bently2, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.bently3, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.bently4, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.bently5, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.bently6, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.bently7, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+			case 5:
+			canvas.fillText( this.fido1, this.statOriginX, this.statOriginY);
+			canvas.fillText( this.fido2, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.fido3, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.fido4, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.fido5, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.fido6, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.fido7, this.statOriginX, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+		
+		}
+		
+		switch(this.selectionNumberP2){
+			case 0:	
+			canvas.fillText( this.ford1, this.statOriginX2, this.statOriginY);
+			canvas.fillText( this.ford2, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.ford3, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.ford4, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.ford5, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.ford6, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.ford7, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+			case 1:
+			canvas.fillText( this.grape1, this.statOriginX2, this.statOriginY);
+			canvas.fillText( this.grape2, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.grape3, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.grape4, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.grape5, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.grape6, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.grape7, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+
+
+			case 2:
+			canvas.fillText( this.becky1, this.statOriginX2, this.statOriginY);
+			canvas.fillText( this.becky2, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.becky3, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.becky4, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.becky5, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.becky6, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.becky7, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 6);
+			
+			break;
+			case 3:
+			canvas.fillText( this.clyde1, this.statOriginX2, this.statOriginY);
+			canvas.fillText( this.clyde2, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.clyde3, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.clyde4, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.clyde5, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.clyde6, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.clyde7, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+			case 4:
+			canvas.fillText( this.bently1, this.statOriginX2, this.statOriginY);
+			canvas.fillText( this.bently2, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.bently3, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.bently4, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.bently5, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.bently6, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.bently7, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+			case 5:
+			canvas.fillText( this.fido1, this.statOriginX2, this.statOriginY);
+			canvas.fillText( this.fido2, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 1);
+			canvas.fillText( this.fido3, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 2);
+			canvas.fillText( this.fido4, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 3);
+			canvas.fillText( this.fido5, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 4);
+			canvas.fillText( this.fido6, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 5);
+			canvas.fillText( this.fido7, this.statOriginX2, this.statOriginY + this.distanceBetweenStatLines * 6);
+			break;
+		
+		}
+		
+		
     },
 
 }

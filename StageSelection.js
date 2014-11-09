@@ -20,6 +20,8 @@ var StageSelection = function(w, h)
 	this.selectionNumber = 0; //0 = desert, 1 = final destination, 2 = grotto
 
     this.running = true;
+	
+	this.selectSound = new Audio('SelectSound.wav');
 }
 
 StageSelection.prototype =
@@ -62,6 +64,7 @@ StageSelection.prototype =
 			case 13: // Enter
 			case 32: // Spacebar
 				//Move to the GameState
+				this.selectSound.play();
 				engine.startGame(this.selectionNumber);
 				break;
 			case 27: //Escape key

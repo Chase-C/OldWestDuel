@@ -16,6 +16,9 @@ var GameState = function(w, h, level)
 	this.desertTheme = new Audio("desert.ogg");
 	this.desertTheme.loop = true;
 	
+	this.grottoTheme = new Audio("grotto.mp3");
+	this.grottoTheme.loop = true;
+	
     this.running = true;
 
     this.player1 = new Player(150, 0, false);
@@ -43,6 +46,9 @@ var GameState = function(w, h, level)
 	this.shakeMagnitude = 12; //how far away the camera shakes around its original point, in pixels
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
 	this.transY = 0;
+
+    this.waitForDraw = true;
+    this.drawTimer   = 0;
 	
 	this.messageX = 400;//The x coordinate of the messages such as "HEADSHOT!!"
 	this.messageY = 50;//The y coordinate of those messages
@@ -55,6 +61,9 @@ var GameState = function(w, h, level)
 	}
 	else if(level === 1){
 		this.finalDestinationTheme.play();
+	}
+	else if(level === 2){
+		this.grottoTheme.play();
 	}
 	
 	this.targetHeight = 0;
@@ -70,7 +79,7 @@ GameState.prototype =
         this.player2.setChar(engine.p2Sel.c);
         this.player2.setGun(engine.p2Sel.g);
 
-        var drawTime = Math.random() * 3.0;
+        var drawTime = (Math.random() * 2.5) + 1.5;
         this.player1.setTimer(drawTime);
         this.player2.setTimer(drawTime);
     },
@@ -86,7 +95,8 @@ GameState.prototype =
             } else {
                 message = "Player 2 Wins Round " + this.roundNumber;
             }
-            this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY + 100, message, 3000));
+
+            this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY + 100, message, 3000, 0));
 		}
 		
         if(this.winner > 0)
@@ -95,6 +105,14 @@ GameState.prototype =
         this.player1.update(dt);
         this.player2.update(dt);
         this.setPlayerAngles();
+
+        if (this.waitForDraw) {
+            this.drawTimer -= dt;
+            if (this.drawTimer < 0) {
+                this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Draw!", this.messageDuration, 0));
+                this.waitForDraw = false;
+            }
+        }
 
         for (var i = 0; i < this.shots.length; i++) {
             if (this.shots[i].active) {
@@ -107,17 +125,17 @@ GameState.prototype =
                     if (colY > -1) {
                         if (colY >= 0 && colY < 0.4 * targetHeight) {
 							//legshot
-							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "legshot +1", this.messageDuration));
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "legshot +1", this.messageDuration, 0));
                             target.enemy.score += 1;
                         } else if (colY >= 0.4 * targetHeight && colY < 0.8 * targetHeight) {
-							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Bodyshot +2", this.messageDuration));
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Bodyshot +2", this.messageDuration, 0));
                             target.enemy.score += 2;
                         } else if (colY >= 0.8 * targetHeight && colY <= targetHeight) {
                             target.enemy.score += 6;
-							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "HEADSHOT! +6", this.messageDuration));
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "HEADSHOT! +6", this.messageDuration, 0));
                         }
 						
-						console.log(this.screenMessages.length);
+						//console.log(this.screenMessages.length);
 
                         target.kill(colY);
                     }
@@ -171,6 +189,12 @@ GameState.prototype =
                 break;
             case 83: // 's'
                 //Crouch player 1
+				if(!this.RoundIsEnding){
+					this.player1.charSprite.changeAnim(1);
+				}
+				else{
+					this.player1.charSprite.changeAnim(3);
+				}
                 break;
             case 70: // 'f'
 				if(this.player1.canShoot() && !this.roundIsEnding){
@@ -192,6 +216,12 @@ GameState.prototype =
 				break;
 			case 40: // Down arrow
 				//Crouch player 2
+				if(!this.roundIsEnding){
+					this.player2.charSprite.changeAnim(1);
+				}
+				else{
+					this.player2.charSprite.changeAnim(3);
+				}
 				break;
 			case 27: //Escape key
 				//Quit to the main menu
@@ -260,9 +290,20 @@ GameState.prototype =
 			this.finalDestinationTheme.currentTime = 0;
 			this.desertTheme.pause();
 			this.desertTheme.currentTime = 0;
+			this.grottoTheme.pause();
+			this.grottoTheme.currentTime = 0;
 			engine.menuState.mainMenuTheme.loop = true; //restart main menu song
 			engine.menuState.mainMenuTheme.play();
 			engine.activeState = engine.menuState;
+
+            this.player1.reset();
+            this.player2.reset();
+            this.screenMessages = [];
+            this.roundNumber = 1;
+            this.gameIsEnding = false;
+            this.roundIsEnding = false;
+            this.roundTransitionTimer = 0;
+            this.maxRoundTransitionTime = 4; //takes 4 seconds to move on to next round
 		}
 	
         canvas.clearRect(0, 0, this.w, this.h);
@@ -304,6 +345,16 @@ GameState.prototype =
 		this.transX = 0;
 		this.transY = 0;
 		this.chooseLevel(this.level);
+
+        this.waitForDraw = true;
+        var drawTime = (Math.random() * 2.5) + 2.0;
+        this.player1.setTimer(drawTime);
+        this.player2.setTimer(drawTime);
+
+        this.drawTimer = 1000 * drawTime;
+
+        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Get Ready.", 1500, 0));
+        //this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Draw!", 1000, 300));
 	},
 	
 	chooseLevel: function(level){

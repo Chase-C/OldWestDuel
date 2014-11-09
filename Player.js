@@ -16,6 +16,7 @@ var Player = function(x, y, reverse)
 	
     this.gunShotSound  = new Audio('./GameGunshot.wav');
     this.reloadSound   = new Audio('./ReloadSound.wav');
+	this.wilhelmScream = new Audio('./WilhelmScream.wav');
 
 	this.waitingForDraw = true;
 	this.drawTimer      = 0;
@@ -66,6 +67,12 @@ Player.prototype =
             }
         }
 		
+        if (this.charSprite.curr === 1) {
+            if (this.charSprite.anims[1].complete) {
+                this.charSprite.changeAnim(0);
+            }
+        }
+
         this.da += this.velY / 40;
 
         this.da *= 0.9;
@@ -203,6 +210,7 @@ Player.prototype =
 
     kill: function(colY)
     {
+		this.wilhelmScream.play();
         this.colY = colY;
         this.bloodSprite.anims[0].complete = false;
         this.bloodSprite.anims[0].frame = 0;
