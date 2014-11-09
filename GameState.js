@@ -69,6 +69,10 @@ GameState.prototype =
 
         this.player2.setChar(engine.p2Sel.c);
         this.player2.setGun(engine.p2Sel.g);
+
+        var drawTime = Math.random() * 3.0;
+        this.player1.setTimer(drawTime);
+        this.player2.setTimer(drawTime);
     },
 
     // Update the simulation each frame
@@ -76,11 +80,13 @@ GameState.prototype =
     {
 		if(this.player1.hit || this.player2.hit){
 			this.roundIsEnding = true;
-			this.player1.hit = false;
-			this.player2.hit = false;
-			this.player1.waitingForDraw = false;
-			this.player2.waitingForDraw = false;
-			console.log("Round is ending");
+            var message;
+            if (this.player1.hit) {
+                message = "Player 2 Wins Round " + this.roundNumber;
+            } else {
+                message = "Player 2 Wins Round " + this.roundNumber;
+            }
+            this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, message, 3000));
 		}
 		
         if(this.winner > 0)
@@ -291,11 +297,13 @@ GameState.prototype =
 			//Win/lose/end results
 		}
 		//everything below must be reset after every round
+
+		this.player1.reset();
+		this.player2.reset();
+
 		this.transX = 0;
 		this.transY = 0;
 		this.chooseLevel(this.level);
-		this.player1.waitingForDraw = true;
-		this.player2.waitingForDraw = true;
 	},
 	
 	chooseLevel: function(level){

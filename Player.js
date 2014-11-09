@@ -15,11 +15,11 @@ var Player = function(x, y, reverse)
 	this.reloadMaxCD   = 500;//The number of milliseconds between the end of the fire sound and the reload
 	
     this.gunShotSound  = new Audio('./GameGunshot.wav');
-    this.reloadSound  = new Audio('./ReloadSound.wav');
+    this.reloadSound   = new Audio('./ReloadSound.wav');
 
 	this.waitingForDraw = true;
-	this.drawTimer = 0;
-	this.maxDrawTimer = Math.random() * 10 + 2; //anywhere between 2 and 12 seconds
+	this.drawTimer      = 0;
+	this.maxDrawTimer   = 0;
 
     this.enemyA        = 0;
     this.angle         = -1;
@@ -51,21 +51,27 @@ Player.prototype =
 				console.log("Draw!");
 				this.maxDrawTimer = Math.random() * 10 + 2;
 			}
-		}
-	
-        var e = 0.005;
-        var aDiff = this.angle - this.enemyA;
-		
-        if (aDiff < 0) {
-            if (this.da < 0 || aDiff < -e) {
-                this.da += 0.01;
-            }
-        } else if (aDiff > 0) {
-            if (this.da > 0 || aDiff > e) {
-                this.da -= 0.01;
+		} else {
+            var e = 0.005;
+            var aDiff = this.angle - this.enemyA;
+
+            if (aDiff < 0) {
+                if (this.da < 0 || aDiff < -e) {
+                    this.da += 0.01;
+                }
+            } else if (aDiff > 0) {
+                if (this.da > 0 || aDiff > e) {
+                    this.da -= 0.01;
+                }
             }
         }
 		
+        this.da += this.velY / 40;
+
+        this.da *= 0.9;
+        this.angle += this.da;
+
+
 		this.reloadCD -= dt;//tick the reload timer down
 		
 		if(this.gunCD > 0){//Setting it from 0 to -delta would cause the reload sound to play constantly - would be game breaking.
@@ -91,11 +97,6 @@ Player.prototype =
 				
 			}
 		}
-
-        this.da += this.velY / 40;
-
-        this.da *= 0.9;
-        this.angle += this.da;
 
         if (this.y != this.floorY) {//If the player is not on the floor, gravity accelerates them downward
             this.velY += this.gravity * dt;
@@ -126,6 +127,12 @@ Player.prototype =
         }
     },
 
+    setTimer: function(time)
+    {
+        this.maxDrawTimer = time;
+        this.waitingForDraw = true;
+    },
+
     jump: function()
     {
         if(!this.hit && this.y===this.floorY){//If you're on the ground
@@ -152,7 +159,18 @@ Player.prototype =
     },
 	
 	reset: function(){
-		
+        this.waitingForDraw = true;
+        this.drawTimer      = 0;
+        this.maxDrawTimer   = 0;
+
+        this.angle         = -1;
+        this.da            = 0;
+
+        this.hit           = false;
+
+        this.charSprite.anims[3].complete = false;
+        this.charSprite.anims[3].frame = 0;
+        this.charSprite.changeAnim(0);
 	},
 
     setFloor: function(y)
