@@ -30,6 +30,8 @@ var CharacterSelection = function(w, h)
 
     this.running = true;
 	
+	this.selectSound = new Audio('SelectSound.wav');
+	
 	this.bently1 = "Bently";
 	this.bently2 = "Moxie: 8";
 	this.bently3 = "Cojones: 8";
@@ -122,6 +124,7 @@ CharacterSelection.prototype =
 			case 13: // Enter
 			case 32: // Spacebar
 				//Move to the StageSelection
+				this.selectSound.play();
                 engine.p1Sel = new Object('c', 'g');
                 engine.p1Sel.c = this.chars[this.selectionNumberP1].clone();
                 engine.p1Sel.g = this.guns[this.selectionNumberP1].clone();
