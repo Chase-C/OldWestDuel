@@ -10,7 +10,8 @@ var Engine = function(w, h)
     this.time = Date.now();
 	
 	this.gameState = new GameState(w, h);
-	this.activeState = this.gameState;
+	this.menuState = new MenuState(w, h);
+	this.activeState = this.menuState;
 }
 
 Engine.prototype =
@@ -45,4 +46,8 @@ Engine.prototype =
     {
 		this.activeState.draw(canvas);
     },
+	
+	startGame: function(stage){
+		this.activeState = new GameState(this.w, this.h, stage);
+	}
 }

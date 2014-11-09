@@ -1,13 +1,18 @@
-var GameState = function(w, h)
+var GameState = function(w, h, level)
 {
     this.w = w || 0;
     this.h = h || 0;
+	
+	this.level = level;
 
     this.desertBackground = new Image();
     this.desertBackground.src = './images/bg_desert.png'
 	
 	this.finalDestinationBackground = new Image();
 	this.finalDestinationBackground.src = './images/finald.png';
+	
+	this.grottoBackground = new Image();
+	this.grottoBackground.src = './images/bg_grotto.png';
 	
 	this.activeBackground = this.desertBackground; //this.activeBackground should be set after ALL other background images are initialized
 
@@ -22,11 +27,13 @@ var GameState = function(w, h)
 		this.player1 = new Player(240, 401, false);
 		this.player2 = new Player(580, 401, true);
 	}*/
-	this.chooseLevel(0);
+	this.chooseLevel(this.level);
 
     this.shots = [];
 
     this.winner = 0;
+	
+	this.gameIsEnding = false;
 	
 	this.isScreenShaking = true; //set this to true any time a screen shake should occur 
 	this.isScreenShakingEnd = false;
@@ -37,7 +44,7 @@ var GameState = function(w, h)
 }
 
 GameState.prototype =
-{
+{	
     // Update the simulation each frame
     update: function(dt)
     {
@@ -99,7 +106,10 @@ GameState.prototype =
 			case 40: // Down arrow
 				//Crouch player 2
 				break;
-			
+			case 27: //Escape key
+				//Quit to the main menu
+				this.gameIsEnding = true;
+				break;
 		}
 	
 	},
@@ -126,6 +136,16 @@ GameState.prototype =
 			this.transX = 0;
 			this.transY = 0;
 		}
+		
+		if(this.gameIsEnding){ //ensures that the camera is back to normal by the time the game ends
+			canvas.translate(-this.transX, -this.transY);
+			this.isScreenShaking = false;
+			this.isScreenShakingEnd = false;
+			this.transX = 0;
+			this.transY = 0;
+			
+			engine.activeState = engine.menuState;
+		}
 	
         canvas.clearRect(0, 0, this.w, this.h);
         canvas.drawImage(this.activeBackground, 0, 0, 820, 640);
@@ -151,6 +171,12 @@ GameState.prototype =
 			var yPos = 431;
 			this.player1 = new Player(240, yPos, false);
 			this.player2 = new Player(580, yPos, true);
+		}
+		else if(level === 2){ //2 is grotto
+			this.activeBackground = this.grottoBackground;
+			var yPos = 431;
+			this.player1 = new Player(150, yPos, false);
+			this.player2 = new Player(670, yPos, true);
 		}
 	}
 }
