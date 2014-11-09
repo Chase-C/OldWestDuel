@@ -15,6 +15,9 @@ var StageSelection = function(w, h)
 	this.xSelect3 = 53 * 2;
 	this.ySelect3 = 197 * 2;
 	
+	this.xSelect4 = 135 * 2;
+	this.ySelect4 = 199 * 2;
+	
 	this.currentSelectionX = this.xSelect1;
 	this.currentSelectionY = this.ySelect1;
 	this.selectionNumber = 0; //0 = desert, 1 = final destination, 2 = grotto
@@ -31,9 +34,9 @@ StageSelection.prototype =
     {
 		//makes sure selection number is within range
 		if(this.selectionNumber < 0){ 
-			this.selectionNumber = 2;
+			this.selectionNumber = 3;
 		}
-		if(this.selectionNumber > 2){ 
+		if(this.selectionNumber > 3){ 
 			this.selectionNumber = 0;
 		}
 	
@@ -49,6 +52,10 @@ StageSelection.prototype =
 		else if(this.selectionNumber === 2){
 			this.currentSelectionX = this.xSelect3;
 			this.currentSelectionY = this.ySelect3;
+		}
+		else if(this.selectionNumber === 3){
+			this.currentSelectionX = this.xSelect4;
+			this.currentSelectionY = this.ySelect4;
 		}
     },
 
@@ -98,6 +105,9 @@ StageSelection.prototype =
 		}
 		else if(this.selectionNumber === 2){
 			canvas.drawImage(engine.gameState.grottoBackground, 43, 120, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
+		}
+		else if(this.selectionNumber === 3){
+			canvas.drawImage(engine.gameState.peaksBackground, 43, 120, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
 		}
 		
 		canvas.drawImage(this.stageSelectHighlight, this.currentSelectionX, this.currentSelectionY, 62 * 2, 40 * 2);
