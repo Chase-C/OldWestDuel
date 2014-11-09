@@ -264,6 +264,15 @@ GameState.prototype =
 			engine.menuState.mainMenuTheme.loop = true; //restart main menu song
 			engine.menuState.mainMenuTheme.play();
 			engine.activeState = engine.menuState;
+
+            this.player1.reset();
+            this.player2.reset();
+            this.screenMessages = [];
+            this.roundNumber = 1;
+            this.gameIsEnding = false;
+            this.roundIsEnding = false;
+            this.roundTransitionTimer = 0;
+            this.maxRoundTransitionTime = 4; //takes 4 seconds to move on to next round
 		}
 	
         canvas.clearRect(0, 0, this.w, this.h);
@@ -310,8 +319,8 @@ GameState.prototype =
         this.player1.setTimer(drawTime);
         this.player2.setTimer(drawTime);
 
-        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Get Ready.", 3000, 1.5, 0));
-        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Draw!", 3000, 1.0, drawTime));
+        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Get Ready.", 1500, 0));
+        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Draw!", 1000, drawTime * 1000));
 	},
 	
 	chooseLevel: function(level){
