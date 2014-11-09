@@ -38,5 +38,22 @@ UI.prototype =
         canvas.lineWidth   = 3;
         canvas.strokeStyle = '#FF5555';
         canvas.stroke();
+    },
+
+    drawScore: function(canvas, player, flip)
+    {
+        var width = 228;
+        var x     = 0;
+        if (flip) {
+            x = 820 - width;
+        } else {
+            x = width;
+        }
+
+        canvas.fillStyle = '#FFFFFF';
+        canvas.font = '38px sans-serif';
+        canvas.textBaseline = 'middle';
+        canvas.textAlign = 'center';
+        canvas.fillText(player.score, x, 36);
     }
 }

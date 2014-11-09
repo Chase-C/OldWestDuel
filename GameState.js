@@ -62,53 +62,47 @@ GameState.prototype =
             if (this.shots[i].active) {
                 this.shots[i].update(dt);
                 if (this.shots[i].check) {
-					this.targetHeight = this.shots[i].enemy.h;
-					this.collY = this.shots[i].getCollisionY();
-                    console.log(this.collY);
-					if(this.collY >= 0 && this.collY < 0.4 * this.targetHeight){
-					//Legshot
-					console.log("legshot");
-					this.shots[i].enemy.enemy.score += 1;
-					}
-					else if(this.collY >= 0.4 * this.targetHeight && this.collY < 0.8 * this.targetHeight){
-					//Bodyshot
-					console.log("bodyshot");
-					this.shots[i].enemy.enemy.score += 2;
-					}
-					else if(this.collY >= 0.8 * this.targetHeight && this.collY <= this.targetHeight){
-					console.log("headshot");
-					this.shots[i].enemy.enemy.score += 3;
-					}
-					
-					console.log(this.shots[i].enemy.enemy.score);
-					console.log(this.shots[i].enemy.score);
-					
+                    var target       = this.shots[i].enemy;
+					var targetHeight = target.h;
+					var colY         = this.shots[i].getCollisionY();
+
+                    if (colY > -1) {
+                        if (colY >= 0 && colY < 0.4 * targetHeight) {
+                            target.enemy.score += 1;
+                        } else if (colY >= 0.4 * targetHeight && colY < 0.8 * targetHeight) {
+                            target.enemy.score += 2;
+                        } else if (colY >= 0.8 * targetHeight && colY <= targetHeight) {
+                            target.enemy.score += 3;
+                        }
+
+                        target.kill(colY);
+                    }
                 }
             } else {
                 this.shots.splice(i);
             }
         }
-		
-		//code for screen shaking
-		if(this.isScreenShaking){
-			this.screenShakeTimer += dt;
-			if(this.screenShakeTimer >= 1000){ //how many milliseconds the screen shaking lasts
-				this.screenShakeTimer = 0;
-				this.isScreenShaking = false;
-				this.isScreenShakingEnd = true;
-			}
-		}
+
+        //code for screen shaking
+        if(this.isScreenShaking){
+            this.screenShakeTimer += dt;
+            if(this.screenShakeTimer >= 1000){ //how many milliseconds the screen shaking lasts
+                this.screenShakeTimer = 0;
+                this.isScreenShaking = false;
+                this.isScreenShakingEnd = true;
+            }
+        }
     },
 
-	keyPress: function( keyCode)
-	{
-		switch(keyCode){
-			case 87: // 'w'
-				this.player1.jump();
-				break;
-			case 83: // 's'
-				//Crouch player 1
-				break;
+    keyPress: function( keyCode)
+    {
+        switch(keyCode){
+            case 87: // 'w'
+                this.player1.jump();
+                break;
+            case 83: // 's'
+                //Crouch player 1
+                break;
             case 70: // 'f'
 				if(this.player1.canShoot()){
 					this.shots.push(this.player1.shoot(this.player2));
@@ -117,9 +111,8 @@ GameState.prototype =
 				break;
 				
             case 190: // '.'
-				if(this.player2.canShoot()){
-                this.shots.push(this.player2.shoot(this.player1));
-                
+				if (this.player2.canShoot()) {
+                    this.shots.push(this.player2.shoot(this.player1));
 				}
 				break;
 				
@@ -196,6 +189,8 @@ GameState.prototype =
 
         this.ui.drawBar(canvas, this.player1, false);
         this.ui.drawBar(canvas, this.player2, true);
+        this.ui.drawScore(canvas, this.player1, false);
+        this.ui.drawScore(canvas, this.player2, true);
     },
 	
 	//used to move on to the next round
