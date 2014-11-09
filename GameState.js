@@ -16,6 +16,9 @@ var GameState = function(w, h, level)
 	this.desertTheme = new Audio("desert.ogg");
 	this.desertTheme.loop = true;
 	
+	this.grottoTheme = new Audio("grotto.mp3");
+	this.grottoTheme.loop = true;
+	
     this.running = true;
 
     this.player1 = new Player(150, 0, false);
@@ -55,6 +58,9 @@ var GameState = function(w, h, level)
 	}
 	else if(level === 1){
 		this.finalDestinationTheme.play();
+	}
+	else if(level === 2){
+		this.grottoTheme.play();
 	}
 	
 	this.targetHeight = 0;
@@ -171,7 +177,12 @@ GameState.prototype =
                 break;
             case 83: // 's'
                 //Crouch player 1
-				this.player1.charSprite.changeAnim(1);
+				if(!this.RoundIsEnding){
+					this.player1.charSprite.changeAnim(1);
+				}
+				else{
+					this.player1.charSprite.changeAnim(3);
+				}
                 break;
             case 70: // 'f'
 				if(this.player1.canShoot() && !this.roundIsEnding){
@@ -193,7 +204,12 @@ GameState.prototype =
 				break;
 			case 40: // Down arrow
 				//Crouch player 2
-				this.player2.charSprite.changeAnim(1);
+				if(!this.roundIsEnding){
+					this.player2.charSprite.changeAnim(1);
+				}
+				else{
+					this.player2.charSprite.changeAnim(3);
+				}
 				break;
 			case 27: //Escape key
 				//Quit to the main menu
@@ -262,6 +278,8 @@ GameState.prototype =
 			this.finalDestinationTheme.currentTime = 0;
 			this.desertTheme.pause();
 			this.desertTheme.currentTime = 0;
+			this.grottoTheme.pause();
+			this.grottoTheme.currentTime = 0;
 			engine.menuState.mainMenuTheme.loop = true; //restart main menu song
 			engine.menuState.mainMenuTheme.play();
 			engine.activeState = engine.menuState;
