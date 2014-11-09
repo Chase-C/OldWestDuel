@@ -3,13 +3,26 @@ var GameState = function(w, h)
     this.w = w || 0;
     this.h = h || 0;
 
-    this.backgroundImage = new Image();
-    this.backgroundImage.src = './images/bg_grotto.png'
+    this.desertBackground = new Image();
+    this.desertBackground.src = './images/bg_desert.png'
+	
+	this.finalDestinationBackground = new Image();
+	this.finalDestinationBackground.src = './images/finald.png';
+	
+	this.activeBackground = this.desertBackground; //this.activeBackground should be set after ALL other background images are initialized
 
     this.running = true;
 
-    this.player1 = new Player(150, 340, false);
-    this.player2 = new Player(670, 340, true);
+	//select the appropriate positions for the players based on the chosen background
+	/*if(this.activeBackground === this.desertBackground){
+		this.player1 = new Player(150, 521, false);
+		this.player2 = new Player(670, 521, true);
+	}
+	else if(this.activeBackground === this.finalDestinationBackground){
+		this.player1 = new Player(240, 401, false);
+		this.player2 = new Player(580, 401, true);
+	}*/
+	this.chooseLevel(0);
 
     this.winner = 0;
 	
@@ -106,9 +119,25 @@ GameState.prototype =
 		}
 	
         canvas.clearRect(0, 0, this.w, this.h);
-        canvas.drawImage(this.backgroundImage, 0, 0, 820, 640);
+        canvas.drawImage(this.activeBackground, 0, 0, 820, 640);
 
         this.player1.draw(canvas);
         this.player2.draw(canvas);
     },
+	
+	chooseLevel: function(level){
+		//select the appropriate positions for the players based on the chosen background
+		if(level === 0){ //0 is desert
+			this.activeBackground = this.desertBackground;
+			var yPos = 551;
+			this.player1 = new Player(150, yPos, false);
+			this.player2 = new Player(670, yPos, true);
+		}
+		else if(level === 1){ //1 is final destination
+			this.activeBackground = this.finalDestinationBackground;
+			var yPos = 431;
+			this.player1 = new Player(240, yPos, false);
+			this.player2 = new Player(580, yPos, true);
+		}
+	}
 }

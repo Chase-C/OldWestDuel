@@ -1,6 +1,6 @@
 var Player = function(x, y, reverse)
 {	
-	this.floorY = 340;
+	this.floorY = y;
     this.x = x || 0;
     this.y = y || 0;
 	this.velY = 0;
@@ -12,7 +12,9 @@ var Player = function(x, y, reverse)
     this.image = new Image();
     this.image.src = './images/BigJoJo.png';
 	
-	
+	//adjust the y position so that sprites of all dimensions are properly aligned to the floor
+	this.y -= this.image.height * 2;
+	this.floorY = this.y;
 }
 
 Player.prototype =
