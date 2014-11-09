@@ -9,7 +9,7 @@ var MenuState = function(w, h)
 
     this.running = true;
 	
-	this.mainMenuTheme = new Audio("gem_cave.mp3");
+	this.mainMenuTheme = new Audio("gem_cave.ogg");
 	this.mainMenuTheme.loop = true;
 	this.mainMenuTheme.play();
 }

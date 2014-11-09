@@ -59,7 +59,7 @@ Engine.prototype =
     isRunning: function() { return this.running },
 
     draw: function(canvas)
-    {	
+    {
         if (this.activeState) {
             this.activeState.draw(canvas);
         }
@@ -69,10 +69,17 @@ Engine.prototype =
 		this.menuState.mainMenuTheme.loop = false;
 		this.menuState.mainMenuTheme.pause();
 		this.menuState.mainMenuTheme.currentTime = 0;
+
 		this.activeState = this.gameState;
         this.gameState.init();
         this.gameState.chooseLevel(stage);
-		console.log("Game rounds started");
+		
+		//needed so that the stage songs actually start playing
+		if(stage === 0){
+			this.gameState.desertTheme.play();
+		}
+		else if(stage === 1){
+			this.gameState.finalDestinationTheme.play();
+		}
 	},
-	
 }

@@ -13,6 +13,13 @@ var Player = function(x, y, reverse)
 	this.gunMaxCD      = 1200;//The number of milliseconds between one shot and the reload.
 	this.reloadCD      = 0;//The number of milliseconds before the gun can be fired
 	this.reloadMaxCD   = 500;//The number of milliseconds between the end of the fire sound and the reload
+	
+    this.gunShotSound  = new Audio('./GameGunshot.wav');
+    this.reloadSound   = new Audio('./ReloadSound.wav');
+
+	this.waitingForDraw = true;
+	this.drawTimer      = 0;
+	this.maxDrawTimer   = 0;
 
     this.enemyA        = 0;
     this.angle         = -1;
@@ -36,19 +43,35 @@ Player.prototype =
 {
     update: function(dt)
     {
-        var e = 0.005;
-        var aDiff = this.angle - this.enemyA;
-		
-        if (aDiff < 0) {
-            if (this.da < 0 || aDiff < -e) {
-                this.da += 0.01;
-            }
-        } else if (aDiff > 0) {
-            if (this.da > 0 || aDiff > e) {
-                this.da -= 0.01;
+		if(this.waitingForDraw){ //players can't shoot until ref says draw
+			this.drawTimer += dt;
+			if(this.drawTimer / 1000.0 >= this.maxDrawTimer){
+				this.drawTimer = 0;
+				this.waitingForDraw = false;
+				console.log("Draw!");
+				this.maxDrawTimer = Math.random() * 10 + 2;
+			}
+		} else {
+            var e = 0.005;
+            var aDiff = this.angle - this.enemyA;
+
+            if (aDiff < 0) {
+                if (this.da < 0 || aDiff < -e) {
+                    this.da += 0.01;
+                }
+            } else if (aDiff > 0) {
+                if (this.da > 0 || aDiff > e) {
+                    this.da -= 0.01;
+                }
             }
         }
 		
+        this.da += this.velY / 40;
+
+        this.da *= 0.9;
+        this.angle += this.da;
+
+
 		this.reloadCD -= dt;//tick the reload timer down
 		
 		if(this.gunCD > 0){//Setting it from 0 to -delta would cause the reload sound to play constantly - would be game breaking.
@@ -75,11 +98,6 @@ Player.prototype =
 			}
 		}
 
-        this.da += this.velY / 40;
-
-        this.da *= 0.9;
-        this.angle += this.da;
-
         if (this.y != this.floorY) {//If the player is not on the floor, gravity accelerates them downward
             this.velY += this.gravity * dt;
         }
@@ -101,6 +119,18 @@ Player.prototype =
         if (!this.bloodSprite.anims[0].complete) {
             this.bloodSprite.update(dt);
         }
+
+        if(!this.gunSprite.anims[0].complete) {
+            this.gunSprite.update(dt);
+        } else {
+            this.gunSprite.anims[0].frame = 0;
+        }
+    },
+
+    setTimer: function(time)
+    {
+        this.maxDrawTimer = time;
+        this.waitingForDraw = true;
     },
 
     jump: function()
@@ -118,16 +148,29 @@ Player.prototype =
 
     shoot: function(enemy)
     {
-	
-		//Play the gunshot sound here!!
 		this.gunShotSound.play();
 		var shot = new Shot(this.x, this.y + (this.h / 2), this.angle, enemy);
 		this.gunCD = this.gunMaxCD;
+
+        this.gunSprite.anims[0].complete = false;
+        this.gunSprite.anims[0].frame = 0;
+
 		return shot;
     },
 	
 	reset: function(){
-		
+        this.waitingForDraw = true;
+        this.drawTimer      = 0;
+        this.maxDrawTimer   = 0;
+
+        this.angle         = -1;
+        this.da            = 0;
+
+        this.hit           = false;
+
+        this.charSprite.anims[3].complete = false;
+        this.charSprite.anims[3].frame = 0;
+        this.charSprite.changeAnim(0);
 	},
 
     setFloor: function(y)
@@ -178,7 +221,7 @@ Player.prototype =
         if (!this.hit) {
             canvas.translate(this.x + this.w - 12, this.y + (this.h / 2) - 8);
             canvas.rotate(-this.angle);
-            this.gunSprite.drawFrame(canvas, 0, 0, 0, 0);
+            this.gunSprite.draw(canvas, 0, 0);
             canvas.rotate(this.angle);
             canvas.translate(-(this.x + this.w - 12), -(this.y + (this.h / 2) - 8));
         }
@@ -200,10 +243,10 @@ Player.prototype =
 	},
 	
 	canShoot: function(){
-        if (this.hit) {
-            return false;
-        }
-        j
+		if(this.waitingForDraw || this.hit){
+			return false;
+		}
+	
 		if(this.gunCD <= 0 && this.reloadCD <= 0){
 			return true;
 		}

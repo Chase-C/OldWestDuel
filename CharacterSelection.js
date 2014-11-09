@@ -168,7 +168,6 @@ CharacterSelection.prototype =
                                                      this.previewX2,
                                                      this.previewY2);
 
-		
 		canvas.drawImage(this.p1Select, this.currentSelectionXP1, this.ySelectP1, 17 * 2, 17 * 2);
 		canvas.drawImage(this.p2Select, this.currentSelectionXP2, this.ySelectP2, 17 * 2, 17 * 2);
     },
