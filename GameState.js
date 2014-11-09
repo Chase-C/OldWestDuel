@@ -82,6 +82,7 @@ GameState.prototype =
         var drawTime = (Math.random() * 2.5) + 1.5;
         this.player1.setTimer(drawTime);
         this.player2.setTimer(drawTime);
+        this.drawTimer = 1000 * drawTime;
     },
 
     // Update the simulation each frame
@@ -188,13 +189,7 @@ GameState.prototype =
 				}
                 break;
             case 83: // 's'
-                //Crouch player 1
-				if(!this.RoundIsEnding){
-					this.player1.charSprite.changeAnim(1);
-				}
-				else{
-					this.player1.charSprite.changeAnim(3);
-				}
+                this.player1.duck();
                 break;
             case 70: // 'f'
 				if(this.player1.canShoot() && !this.roundIsEnding){
@@ -216,12 +211,13 @@ GameState.prototype =
 				break;
 			case 40: // Down arrow
 				//Crouch player 2
-				if(!this.roundIsEnding){
-					this.player2.charSprite.changeAnim(1);
-				}
-				else{
-					this.player2.charSprite.changeAnim(3);
-				}
+                this.player2.duck();
+				//if(!this.roundIsEnding){
+				//	this.player2.charSprite.changeAnim(1);
+				//}
+				//else{
+				//	this.player2.charSprite.changeAnim(3);
+				//}
 				break;
 			case 27: //Escape key
 				//Quit to the main menu

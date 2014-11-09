@@ -151,6 +151,10 @@ Player.prototype =
 
     duck: function()
     {
+        if (!this.hit && !this.waitingForDraw) {
+            this.charSprite.changeAnim(1);
+            this.charSprite.anims[1].complete = false;
+        }
     },
 
     shoot: function(enemy)
