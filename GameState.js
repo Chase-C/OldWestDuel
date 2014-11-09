@@ -10,6 +10,12 @@ var GameState = function(w, h, level)
 	this.grottoBackground = null;
 	this.activeBackground = null;
 
+	this.finalDestinationTheme = new Audio("final_D.mp3");
+	this.finalDestinationTheme.loop = true;
+	
+	this.desertTheme = new Audio("desert.mp3");
+	this.desertTheme.loop = true;
+	
     this.running = true;
 
     this.player1 = new Player(150, 0, false);
@@ -27,6 +33,9 @@ var GameState = function(w, h, level)
 	this.maxRoundNumber = 3; //may change later
 	
 	this.gameIsEnding = false;
+	this.roundIsEnding = false;
+	this.roundTransitionTimer = 0;
+	this.maxRoundTransitionTime = 4; //takes 4 seconds to move on to next round
 	
 	this.isScreenShaking = true; //set this to true any time a screen shake should occur 
 	this.isScreenShakingEnd = false;
@@ -40,6 +49,13 @@ var GameState = function(w, h, level)
 	this.messageDuration = 1700;//The number of ms that a message lasts for, equal to the time between shots
 
 	this.chooseLevel(level);
+	
+	if(level === 0){
+		this.desertTheme.play();
+	}
+	else if(level === 1){
+		this.finalDestinationTheme.play();
+	}
 	
 	this.targetHeight = 0;
 }
@@ -58,6 +74,15 @@ GameState.prototype =
     // Update the simulation each frame
     update: function(dt)
     {
+		if(this.player1.hit || this.player2.hit){
+			this.roundIsEnding = true;
+			this.player1.hit = false;
+			this.player2.hit = false;
+			this.player1.waitingForDraw = false;
+			this.player2.waitingForDraw = false;
+			console.log("Round is ending");
+		}
+		
         if(this.winner > 0)
             return;
 
@@ -117,32 +142,47 @@ GameState.prototype =
                 this.isScreenShakingEnd = true;
             }
         }
+		
+		//code for reseting to a new round
+		if(this.roundIsEnding){
+			this.roundTransitionTimer += dt;
+			if(this.roundTransitionTimer / 1000.0 >= this.maxRoundTransitionTime){
+				this.roundTransitionTimer = 0;
+				this.roundIsEnding = false;
+				console.log("Round has ended, moving on to new round");
+				this.reset();
+			}
+		}
     },
 
     keyPress: function( keyCode)
     {
         switch(keyCode){
             case 87: // 'w'
-                this.player1.jump();
+				if(!this.roundIsEnding && !this.player1.waitingForDraw){
+					this.player1.jump();
+				}
                 break;
             case 83: // 's'
                 //Crouch player 1
                 break;
             case 70: // 'f'
-				if(this.player1.canShoot()){
+				if(this.player1.canShoot() && !this.roundIsEnding){
 					this.shots.push(this.player1.shoot(this.player2));
 					
 				}
 				break;
 				
             case 190: // '.'
-				if (this.player2.canShoot()) {
+				if (this.player2.canShoot() && !this.roundIsEnding) {
                     this.shots.push(this.player2.shoot(this.player1));
 				}
 				break;
 				
 			case 38: // Up arrow
-				this.player2.jump();
+				if(!this.roundIsEnding && !this.player2.waitingForDraw){
+					this.player2.jump();
+				}
 				break;
 			case 40: // Down arrow
 				//Crouch player 2
@@ -203,13 +243,19 @@ GameState.prototype =
 			this.transY = 0;
 		}
 		
-		if(this.gameIsEnding){ //ensures that the camera is back to normal by the time the game ends
-			canvas.translate(-this.transX, -this.transY);
+		if(this.gameIsEnding){ //when moving back to the main menu
+			canvas.translate(-this.transX, -this.transY); //ensures that the camera is back to normal by the time the game ends
 			this.isScreenShaking = false;
 			this.isScreenShakingEnd = false;
 			this.transX = 0;
 			this.transY = 0;
 			
+			this.finalDestinationTheme.pause();
+			this.finalDestinationTheme.currentTime = 0;
+			this.desertTheme.pause();
+			this.desertTheme.currentTime = 0;
+			engine.menuState.mainMenuTheme.loop = true; //restart main menu song
+			engine.menuState.mainMenuTheme.play();
 			engine.activeState = engine.menuState;
 		}
 	
@@ -248,6 +294,8 @@ GameState.prototype =
 		this.transX = 0;
 		this.transY = 0;
 		this.chooseLevel(this.level);
+		this.player1.waitingForDraw = true;
+		this.player2.waitingForDraw = true;
 	},
 	
 	chooseLevel: function(level){

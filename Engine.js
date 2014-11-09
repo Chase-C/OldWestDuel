@@ -70,4 +70,14 @@ Engine.prototype =
         this.gameState.init();
         this.gameState.chooseLevel(stage);
 	}
+	
+	startGame: function(stage){
+		this.menuState.mainMenuTheme.loop = false;
+		this.menuState.mainMenuTheme.pause();
+		this.menuState.mainMenuTheme.currentTime = 0;
+		console.log("Game rounds started");
+		this.activeState = this.gameState;
+        this.gameState.init();
+        this.gameState.chooseLevel(stage);
+	},
 }
