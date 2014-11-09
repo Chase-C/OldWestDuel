@@ -10,10 +10,10 @@ var GameState = function(w, h, level)
 	this.grottoBackground = null;
 	this.activeBackground = null;
 
-	this.finalDestinationTheme = new Audio("final_D.mp3");
+	this.finalDestinationTheme = new Audio("final_D.ogg");
 	this.finalDestinationTheme.loop = true;
 	
-	this.desertTheme = new Audio("desert.mp3");
+	this.desertTheme = new Audio("desert.ogg");
 	this.desertTheme.loop = true;
 	
     this.running = true;

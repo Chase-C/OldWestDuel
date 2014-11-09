@@ -14,6 +14,9 @@ var Player = function(x, y, reverse)
 	this.reloadCD      = 0;//The number of milliseconds before the gun can be fired
 	this.reloadMaxCD   = 500;//The number of milliseconds between the end of the fire sound and the reload
 	
+    this.gunShotSound  = new Audio('./GameGunshot.wav');
+    this.reloadSound  = new Audio('./ReloadSound.wav');
+
 	this.waitingForDraw = true;
 	this.drawTimer = 0;
 	this.maxDrawTimer = Math.random() * 10 + 2; //anywhere between 2 and 12 seconds
@@ -115,6 +118,12 @@ Player.prototype =
         if (!this.bloodSprite.anims[0].complete) {
             this.bloodSprite.update(dt);
         }
+
+        if(!this.gunSprite.anims[0].complete) {
+            this.gunSprite.update(dt);
+        } else {
+            this.gunSprite.anims[0].frame = 0;
+        }
     },
 
     jump: function()
@@ -132,11 +141,13 @@ Player.prototype =
 
     shoot: function(enemy)
     {
-	
-		//Play the gunshot sound here!!
 		this.gunShotSound.play();
 		var shot = new Shot(this.x, this.y + (this.h / 2), this.angle, enemy);
 		this.gunCD = this.gunMaxCD;
+
+        this.gunSprite.anims[0].complete = false;
+        this.gunSprite.anims[0].frame = 0;
+
 		return shot;
     },
 	
@@ -192,7 +203,7 @@ Player.prototype =
         if (!this.hit) {
             canvas.translate(this.x + this.w - 12, this.y + (this.h / 2) - 8);
             canvas.rotate(-this.angle);
-            this.gunSprite.drawFrame(canvas, 0, 0, 0, 0);
+            this.gunSprite.draw(canvas, 0, 0);
             canvas.rotate(this.angle);
             canvas.translate(-(this.x + this.w - 12), -(this.y + (this.h / 2) - 8));
         }
