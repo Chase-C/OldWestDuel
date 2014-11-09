@@ -161,13 +161,13 @@ Player.prototype =
             this.x = -this.x;
         }
 
-        canvas.drawImage(this.currentImage, this.x, this.y, this.currentImage.width * 2, this.currentImage.height * 2);
-
         canvas.translate(this.x + this.w - 4, this.y + (this.h / 2) - 8);
         canvas.rotate(-this.angle);
         canvas.drawImage(this.gunSprite, 0, 0, this.gunSprite.width * 2, this.gunSprite.height * 2);
         canvas.rotate(this.angle);
         canvas.translate(-(this.x + this.w - 4), -(this.y + (this.h / 2) - 8));
+
+        canvas.drawImage(this.currentImage, this.x, this.y, this.currentImage.width * 2, this.currentImage.height * 2);
 
         if (!this.bloodSprite.complete) {
             this.bloodSprite.draw(canvas, this.x + (0.7 * this.w), this.y + (this.h - this.colY) - 6);
