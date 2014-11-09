@@ -125,6 +125,10 @@ GameState.prototype =
 				//Quit to the main menu
 				this.gameIsEnding = true;
 				break;
+			//test - this should happen when the round actually ends
+			case 82: // 'r'
+				this.reset();
+				break;
 		}
 	
 	},
@@ -188,6 +192,11 @@ GameState.prototype =
 	
 	//used to move on to the next round
 	reset: function(){
+		this.isScreenShaking = false;
+		this.isScreenShakingEnd = true;
+		this.transX = 0;
+		this.transY = 0;
+	
 		this.roundNumber++;
 		if(this.roundNumber > this.maxRoundNumber){
 			//Win/lose/end results
@@ -195,27 +204,40 @@ GameState.prototype =
 		//everything below must be reset after every round
 		this.transX = 0;
 		this.transY = 0;
+		this.chooseLevel(this.level);
 	},
 	
 	chooseLevel: function(level){
 		//select the appropriate positions for the players based on the chosen background
 		if(level === 0){ //0 is desert
 			this.activeBackground = this.desertBackground;
+			var xPosPlayer1 = 160;
+			var xPosPlayer2 = 670;
 			var yPos = 551;
 			this.player1.setFloor(yPos);
+			this.player1.x = xPosPlayer1;
 			this.player2.setFloor(yPos);
+			this.player2.x = xPosPlayer2;
 		}
 		else if(level === 1){ //1 is final destination
 			this.activeBackground = this.finalDestinationBackground;
+			var xPosPlayer1 = 240;
+			var xPosPlayer2 = 580;
 			var yPos = 431;
 			this.player1.setFloor(yPos);
+			this.player1.x = xPosPlayer1;
 			this.player2.setFloor(yPos);
+			this.player2.x = xPosPlayer2;
 		}
 		else if(level === 2){ //2 is grotto
 			this.activeBackground = this.grottoBackground;
+			var xPosPlayer1 = 160;
+			var xPosPlayer2 = 670;
 			var yPos = 431;
 			this.player1.setFloor(yPos);
+			this.player1.x = xPosPlayer1;
 			this.player2.setFloor(yPos);
+			this.player2.x = xPosPlayer2;
 		}
 	}
 }
