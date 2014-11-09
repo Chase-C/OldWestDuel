@@ -18,6 +18,8 @@ var Player = function(x, y, reverse)
 	
 	this.enemy 		   = null;//A reference to the opposing player. this.enemy.enemy = this
 
+    this.h = 0;
+
     this.image = new Image();
     this.image.onload = (function() {
         this.w = 2 * this.image.width;
@@ -28,7 +30,7 @@ var Player = function(x, y, reverse)
         this.y -= this.image.height * 2;
         this.floorY = this.y;
     }).bind(this);
-    this.image.src = './images/BigJoJo.png';
+    this.image.src = './images/BigBigJoJo.png';
 }
 
 Player.prototype =
@@ -38,17 +40,23 @@ Player.prototype =
         if (this.angle < this.enemyA) {
             var mod = 1;
             if (this.da > 0) {
-                mod = (1 - Math.abs(this.da / this.maxDa));
+                mod = (1 - Math.min(1, this.da / this.maxDa));
             }
 
-            this.da += 0.02 * mod;
+            this.da += 0.01 * mod;
         } else {
             var mod = 1;
             if (this.da < 0) {
-                mod = (1 - Math.abs(this.da / this.maxDa));
+                mod = (1 - Math.min(1, -this.da / this.maxDa));
             }
 
-            this.da -= 0.02 * mod;
+            this.da -= 0.01 * mod;
+        }
+
+        this.da *= 0.9;
+
+        if (Math.abs(this.da) < Math.abs(this.angle - this.enemyA)) {
+            this.da = this.enemyA - this.angle;
         }
 
         this.angle += this.da;
@@ -91,7 +99,7 @@ Player.prototype =
 
     setFloor: function(y)
     {
-        this.y      = y - (this.image.height * 2);
+        this.y      = y - (this.h * 2);
         this.floorY = y;
     },
 
