@@ -9,8 +9,10 @@ var Player = function(x, y, reverse)
 	this.gravity       = 0.005;
     this.reverse       = reverse;
 	
-	this.gunCD		   = 0;//The number of milliseconds before the gun can be fired.
-	this.gunMaxCD      = 1000;//The number of milliseconds between one shot and the next.
+	this.gunCD		   = 0;//The number of milliseconds before the gun can be reloaded.
+	this.gunMaxCD      = 1200;//The number of milliseconds between one shot and the reload.
+	this.reloadCD      = 0;//The number of milliseconds before the gun can be fired
+	this.reloadMaxCD   = 500;//The number of milliseconds between the end of the fire sound and the reload
 
     this.enemyA        = 0;
     this.angle         = -1;
@@ -33,6 +35,9 @@ var Player = function(x, y, reverse)
         this.floorY = this.y;
     }).bind(this);
     this.image.src = './images/BigJoJo.png';
+	
+	this.gunShotSound = new Audio('GameGunshot.wav');
+	this.reloadSound  = new Audio('ReloadSound.wav');
 }
 
 Player.prototype =
@@ -52,19 +57,27 @@ Player.prototype =
             }
         }
 		
-
+		this.reloadCD -= dt;//tick the reload timer down
+		
 		if(this.gunCD > 0){//Setting it from 0 to -delta would cause the reload sound to play constantly - would be game breaking.
 		
 			this.gunCD -= dt;//tick the cooldown timer down
+
 			//This is where you play the reload sound (there would be a bug if gunCD happened to reach exactly 0 then the reload sound wouldn't play
 			//But it is unlikely
 			if(this.gunCD == 0){
 				this.gunCD = -1;//This way you won't get a 1/delta bug where the reload sound won't play
 			}
 			
+			if(this.reloadCD < 0){
+				this.reloadCD = 0;//Just set it to 0 for simplicity's sake.
+			}
+			
+			
 			if(this.gunCD < 0){
 				//Play the reload sound here!!
-				
+				this.reloadSound.play();
+				this.reloadCD = this.reloadMaxCD;//Put it on reload cooldown
 				this.gunCD = 0;//Set it to 0 so the game knows not to play the reload sound again.
 				
 			}
@@ -102,7 +115,8 @@ Player.prototype =
     shoot: function(enemy)
     {
 	
-
+		//Play the gunshot sound here!!
+		this.gunShotSound.play();
 		var shot = new Shot(this.x, this.y + (this.h / 2), this.angle, enemy);
 		this.gunCD = this.gunMaxCD;
 		return shot;
@@ -141,7 +155,7 @@ Player.prototype =
 	},
 	
 	canShoot: function(){
-		if(this.gunCD <= 0){
+		if(this.gunCD <= 0 && this.reloadCD <= 0){
 			return true;
 		}
 		
