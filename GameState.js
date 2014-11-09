@@ -70,7 +70,7 @@ GameState.prototype =
         this.player2.setChar(engine.p2Sel.c);
         this.player2.setGun(engine.p2Sel.g);
 
-        var drawTime = Math.random() * 3.0;
+        var drawTime = (Math.random() * 2.5) + 1.5;
         this.player1.setTimer(drawTime);
         this.player2.setTimer(drawTime);
     },
@@ -86,7 +86,7 @@ GameState.prototype =
             } else {
                 message = "Player 2 Wins Round " + this.roundNumber;
             }
-            this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, message, 3000));
+            this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, message, 3000, 0));
 		}
 		
         if(this.winner > 0)
@@ -107,14 +107,14 @@ GameState.prototype =
                     if (colY > -1) {
                         if (colY >= 0 && colY < 0.4 * targetHeight) {
 							//legshot
-							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "legshot +1", this.messageDuration));
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "legshot +1", this.messageDuration, 0));
                             target.enemy.score += 1;
                         } else if (colY >= 0.4 * targetHeight && colY < 0.8 * targetHeight) {
-							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Bodyshot +2", this.messageDuration));
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Bodyshot +2", this.messageDuration, 0));
                             target.enemy.score += 2;
                         } else if (colY >= 0.8 * targetHeight && colY <= targetHeight) {
                             target.enemy.score += 6;
-							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "HEADSHOT! +6", this.messageDuration));
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "HEADSHOT! +6", this.messageDuration, 0));
                         }
 						
 						console.log(this.screenMessages.length);
@@ -304,6 +304,13 @@ GameState.prototype =
 		this.transX = 0;
 		this.transY = 0;
 		this.chooseLevel(this.level);
+
+        var drawTime = (Math.random() * 2.5) + 2.0;
+        this.player1.setTimer(drawTime);
+        this.player2.setTimer(drawTime);
+
+        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Get Ready.", 3000, 1.5, 0));
+        this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Draw!", 3000, 1.0, drawTime));
 	},
 	
 	chooseLevel: function(level){
