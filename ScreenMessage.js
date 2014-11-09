@@ -1,8 +1,9 @@
-var ScreenMessage = function(x, y, message, duration)
+var ScreenMessage = function(x, y, message, duration, delay)
 {
     this.x      = x || 0;
     this.y      = y || 0;
     this.message = message;
+    this.delay   = delay;
 	this.duration = duration;
   
 
@@ -14,22 +15,22 @@ var ScreenMessage = function(x, y, message, duration)
 
 ScreenMessage.prototype =
 {
-
-
     update: function(dt)
     {
         this.time += dt;
-        if (this.time > this.duration) {
+        if (this.time > this.duration + this.delay) {
             this.active = false;
         }
     },
 
     draw: function(canvas)
     {
-        canvas.fillStyle = '#FFFF00';
-        canvas.font = '38px sans-serif';
-        canvas.textBaseline = 'middle';
-        canvas.textAlign = 'center';
-        canvas.fillText(this.message, this.x, this.y);
+        if (this.time > this.delay) {
+            canvas.fillStyle = '#FFFFFF';
+            canvas.font = '38px sans-serif';
+            canvas.textBaseline = 'middle';
+            canvas.textAlign = 'center';
+            canvas.fillText(this.message, this.x, this.y);
+        }
     }
 }

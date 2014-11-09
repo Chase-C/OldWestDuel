@@ -42,7 +42,7 @@ UI.prototype =
 
     drawScore: function(canvas, player, flip)
     {
-        var width = 228;
+        var width = 128;
         var x     = 0;
         if (flip) {
             x = 820 - width;
