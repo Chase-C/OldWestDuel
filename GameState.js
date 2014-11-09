@@ -25,7 +25,7 @@ var GameState = function(w, h, level)
 	this.player2.setEnemy(this.player1);
 	
     this.shots = [];
-
+	this.screenMessages = [];
     this.ui = new UI();
     this.winner = 0;
 	
@@ -40,6 +40,10 @@ var GameState = function(w, h, level)
 	this.shakeMagnitude = 12; //how far away the camera shakes around its original point, in pixels
 	this.transX = 0; //keeps track of the canvas's translation in order to reset it to its original position after screen shaking
 	this.transY = 0;
+	
+	this.messageX = 400;//The x coordinate of the messages such as "HEADSHOT!!"
+	this.messageY = 50;//The y coordinate of those messages
+	this.messageDuration = 1700;//The number of ms that a message lasts for, equal to the time between shots
 
 	this.chooseLevel(level);
 	
@@ -68,18 +72,36 @@ GameState.prototype =
 
                     if (colY > -1) {
                         if (colY >= 0 && colY < 0.4 * targetHeight) {
+							//legshot
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "legshot +1", this.messageDuration));
                             target.enemy.score += 1;
                         } else if (colY >= 0.4 * targetHeight && colY < 0.8 * targetHeight) {
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "Bodyshot +2", this.messageDuration));
                             target.enemy.score += 2;
                         } else if (colY >= 0.8 * targetHeight && colY <= targetHeight) {
-                            target.enemy.score += 3;
+                            target.enemy.score += 6;
+							this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, "HEADSHOT! +6", this.messageDuration));
                         }
+						
+						console.log(this.screenMessages.length);
 
                         target.kill(colY);
                     }
                 }
             } else {
                 this.shots.splice(i);
+            }
+        }
+		
+		
+		for (var i = 0; i < this.screenMessages.length; i++) {
+            if (this.screenMessages[i].active) {
+                this.screenMessages[i].update(dt);
+
+                    
+                } 
+			else {
+                this.screenMessages.splice(i);
             }
         }
 
@@ -186,6 +208,11 @@ GameState.prototype =
         for (var i = 0; i < this.shots.length; i++) {
             this.shots[i].draw(canvas);
         }
+		
+		for (var i = 0; i < this.screenMessages.length; i++){
+			this.screenMessages[i].draw(canvas);
+		
+		}
 
         this.ui.drawBar(canvas, this.player1, false);
         this.ui.drawBar(canvas, this.player2, true);
