@@ -86,7 +86,7 @@ GameState.prototype =
             } else {
                 message = "Player 2 Wins Round " + this.roundNumber;
             }
-            this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY, message, 3000));
+            this.screenMessages.push(new ScreenMessage(this.messageX, this.messageY + 100, message, 3000));
 		}
 		
         if(this.winner > 0)
