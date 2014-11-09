@@ -160,7 +160,7 @@ CharacterSelection.prototype =
 			p2.currentImage = p2.fido;
 			canvas.drawImage(p2.fido, this.previewX2, this.previewY2, p2.fido.width * this.previewImageScale, p2.fido.height * this.previewImageScale);
 		}
-		console.log(p2.currentImage);
+		
 		//console.log(this.currentSelectionXP1, this.ySelectP1);
 		canvas.drawImage(this.p1Select, this.currentSelectionXP1, this.ySelectP1, 17 * 2, 17 * 2);
 		canvas.drawImage(this.p2Select, this.currentSelectionXP2, this.ySelectP2, 17 * 2, 17 * 2);

@@ -8,6 +8,10 @@ var MenuState = function(w, h)
 	this.currentScreen = this.characterSelection;
 
     this.running = true;
+	
+	this.mainMenuTheme = new Audio("gem_cave.mp3");
+	this.mainMenuTheme.loop = true;
+	this.mainMenuTheme.play();
 }
 
 MenuState.prototype =
