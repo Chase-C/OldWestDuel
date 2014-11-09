@@ -30,6 +30,22 @@ var Player = function(x, y, reverse)
         this.floorY = this.y;
     }).bind(this);
     this.image.src = './images/BigJoJo.png';
+	
+	this.becky = new Image();
+	this.becky.src = './images/becky.png';
+	
+	this.bently = new Image();
+	this.bently.src = './images/bently.png';
+	
+	this.fido = new Image();
+	this.fido.src = './images/fido.png';
+	
+	this.ford = new Image();
+	this.ford.src = './images/ford.png';
+	
+	this.grape = new Image();
+	this.grape.src = './images/grape.png';
+	
 }
 
 Player.prototype =

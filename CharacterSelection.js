@@ -18,6 +18,14 @@ var CharacterSelection = function(w, h)
 	this.xSelectP2 = 68 * 2;
 	this.ySelectP2 = 166 * 2;
 	
+	this.previewX1 = 70 * 2; //the coordinates for the character preview image
+	this.previewY1 = 105 * 2;
+	
+	this.previewX2 = 312 * 2; //the coordinates for the character preview image
+	this.previewY2 = 105 * 2;
+	
+	this.previewImageScale = 2; //how much to scale the preview images by
+	
 	this.currentSelectionXP1 = this.xSelectP1;
 	console.log("After initialization: " + this.currentSelectionXP1);
 	this.currentSelectionXP2 = this.xSelectP2;
@@ -61,7 +69,6 @@ CharacterSelection.prototype =
 			this.currentSelectionY = this.ySelect3;
 		}*/
 		this.currentSelectionXP1 = this.xSelectP1 + this.selectionNumberP1 * 58 * 2; //58 is the number of pixels between each character's image
-		console.log("After multiplication: " + this.currentSelectionXP1);
 		this.currentSelectionXP2 = this.xSelectP2 + this.selectionNumberP2 * 58 * 2; //58 is the number of pixels between each character's image
     },
 
@@ -97,17 +104,50 @@ CharacterSelection.prototype =
     {
         canvas.clearRect(0, 0, this.w, this.h);
 		canvas.drawImage(this.backgroundImage, 0, 0, 820, 640);
-		/*if(this.selectionNumber === 0){
-			canvas.drawImage(engine.gameState.desertBackground, 43, 150, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
-		}
-		else if(this.selectionNumber === 1){
-			canvas.drawImage(engine.gameState.finalDestinationBackground, 43, 150, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
-		}
-		else if(this.selectionNumber === 2){
-			canvas.drawImage(engine.gameState.grottoBackground, 43, 120, 326, 84, 43 * 2, 43 * 2, 325 * 2, 83 * 2);
-		}*/
+		var p1 = engine.gameState.player1;
+		var p2 = engine.gameState.player2;
 		
-		console.log(this.currentSelectionXP1, this.ySelectP1);
+		//preview images for player 1
+		if(this.selectionNumberP1 === 0){
+			canvas.drawImage(p1.ford, this.previewX1, this.previewY1, p1.ford.width * this.previewImageScale, p1.ford.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 1){
+			canvas.drawImage(p1.grape, this.previewX1, this.previewY1, p1.grape.width * this.previewImageScale, p1.grape.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 2){
+			canvas.drawImage(p1.becky, this.previewX1, this.previewY1, p1.becky.width * this.previewImageScale, p1.becky.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 3){
+			canvas.drawImage(p1.fido, this.previewX1, this.previewY1, p1.fido.width * this.previewImageScale, p1.fido.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 4){
+			canvas.drawImage(p1.bently, this.previewX1, this.previewY1, p1.bently.width * this.previewImageScale, p1.bently.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP1 === 5){
+			canvas.drawImage(p1.fido, this.previewX1, this.previewY1, p1.fido.width * this.previewImageScale, p1.fido.height * this.previewImageScale);
+		}
+		
+		//preview images for player 2
+		if(this.selectionNumberP2 === 0){
+			canvas.drawImage(p2.ford, this.previewX2, this.previewY2, p2.ford.width * this.previewImageScale, p2.ford.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 1){
+			canvas.drawImage(p2.grape, this.previewX2, this.previewY2, p2.grape.width * this.previewImageScale, p2.grape.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 2){
+			canvas.drawImage(p2.becky, this.previewX2, this.previewY2, p2.becky.width * this.previewImageScale, p2.becky.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 3){
+			canvas.drawImage(p2.fido, this.previewX2, this.previewY2, p2.fido.width * this.previewImageScale, p2.fido.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 4){
+			canvas.drawImage(p2.bently, this.previewX2, this.previewY2, p2.bently.width * this.previewImageScale, p2.bently.height * this.previewImageScale);
+		}
+		else if(this.selectionNumberP2 === 5){
+			canvas.drawImage(p2.fido, this.previewX2, this.previewY2, p2.fido.width * this.previewImageScale, p2.fido.height * this.previewImageScale);
+		}
+		
+		//console.log(this.currentSelectionXP1, this.ySelectP1);
 		canvas.drawImage(this.p1Select, this.currentSelectionXP1, this.ySelectP1, 17 * 2, 17 * 2);
 		canvas.drawImage(this.p2Select, this.currentSelectionXP2, this.ySelectP2, 17 * 2, 17 * 2);
     },
