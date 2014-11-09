@@ -13,6 +13,10 @@ var Player = function(x, y, reverse)
     this.angle         = -1;
     this.da            = 0;
     this.maxDa         = 0.2;
+	
+	this.score 		   = 0;//The player's score that they have earned by shooting the opponent
+	
+	this.enemy 		   = null;//A reference to the opposing player. this.enemy.enemy = this
 
     this.image = new Image();
     this.image.onload = (function() {
@@ -77,7 +81,7 @@ Player.prototype =
 
     shoot: function(enemy)
     {
-        var shot = new Shot(this.x, this.y + (this.h / 2), 0.1, enemy);
+        var shot = new Shot(this.x, this.y + (this.h / 2), 0.0, enemy);
         return shot;
     },
 	
@@ -104,5 +108,9 @@ Player.prototype =
             canvas.scale(-1,1);
             this.x = -this.x;
         }
-    }
+    },
+	
+	setEnemy: function(enemy){
+		this.enemy = enemy;
+	}
 }

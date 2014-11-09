@@ -20,6 +20,10 @@ var GameState = function(w, h, level)
 
     this.player1 = new Player(150, 0, false);
     this.player2 = new Player(670, 0, true);
+	
+	this.player1.setEnemy(this.player2);
+	this.player2.setEnemy(this.player1);
+	
     this.shots = [];
 
     this.ui = new UI();
@@ -38,6 +42,8 @@ var GameState = function(w, h, level)
 	this.transY = 0;
 
 	this.chooseLevel(0);
+	
+	this.targetHeight = 0;
 }
 
 GameState.prototype =
@@ -56,17 +62,26 @@ GameState.prototype =
             if (this.shots[i].active) {
                 this.shots[i].update(dt);
                 if (this.shots[i].check) {
+					this.targetHeight = this.shots[i].enemy.h;
 					this.collY = this.shots[i].getCollisionY();
                     console.log(this.collY);
-					if(this.collY >= 0 && this.collY < 0.4 * Player.h){
+					if(this.collY >= 0 && this.collY < 0.4 * this.targetHeight){
 					//Legshot
+					console.log("legshot");
+					this.shots[i].enemy.enemy.score += 1;
 					}
-					else if(this.collY >= 0.4 * Player.h && this.collY < 0.8 * Player.h){
+					else if(this.collY >= 0.4 * this.targetHeight && this.collY < 0.8 * this.targetHeight){
 					//Bodyshot
+					console.log("bodyshot");
+					this.shots[i].enemy.enemy.score += 2;
 					}
-					else if(this.collY >= 0.8 * Player.h && this.collY <= Player.h){
-					//Headshot
+					else if(this.collY >= 0.8 * this.targetHeight && this.collY <= this.targetHeight){
+					console.log("headshot");
+					this.shots[i].enemy.enemy.score += 3;
 					}
+					
+					console.log(this.shots[i].enemy.enemy.score);
+					console.log(this.shots[i].enemy.score);
 					
                 }
             } else {
