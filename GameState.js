@@ -7,7 +7,6 @@ var GameState = function(w, h)
     this.backgroundImage.src = './images/bg_grotto.png'
 
     this.running = true;
-    this.time = Date.now();
 
     this.player1 = new Player(150, 340, false);
     this.player2 = new Player(670, 340, true);
@@ -25,15 +24,13 @@ var GameState = function(w, h)
 GameState.prototype =
 {
     // Update the simulation each frame
-    update: function()
+    update: function(dt)
     {
         if(this.winner > 0)
             return;
 
-        var currTime = Date.now();
-        var dt = currTime - this.time;
-
-        this.time = currTime;
+        this.player1.update(dt);
+        this.player2.update(dt);
 		
 		//code for screen shaking
 		if(this.isScreenShaking){
@@ -54,6 +51,36 @@ GameState.prototype =
             Run();
         }
     },
+
+	keyPress: function( keyCode)
+	{
+		switch(keyCode){
+			case 87:
+			
+				//Jump player 1
+				this.player1.jump();
+				console.log("p1jump");
+				break;
+				
+			
+			case 83:
+			
+				//Crouch player 1
+				break;
+			case 38:
+			
+				//Jump player 2
+				this.player2.jump();
+				console.log("p2jump");
+				break;
+			case 40:
+			
+				//Crouch player 2
+				break;
+			
+		}
+	
+	},
 
     // Functions for starting and stopping the simulation
     start: function() { this.running = true },
