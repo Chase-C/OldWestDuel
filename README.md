@@ -9,12 +9,12 @@ Controls
 
 Player 1
 --------
-w - Jump
-s - duck
-f - shoot
+w - Jump  
+s - duck  
+f - shoot  
 
 Player 2
 --------
-up - jump
-down - duck
-'.' - shoot
+up - jump  
+down - duck  
+'.' - shoot  
